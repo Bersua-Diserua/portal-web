@@ -5,6 +5,7 @@ import {
   MdOutlinePeople,
   MdLogout,
   MdProductionQuantityLimits,
+  MdRsvp,
 } from "react-icons/md";
 import clsxm from "~/utils";
 
@@ -24,6 +25,11 @@ const CONFIG: SidebarButonProps[] = [
     to: "/dashboard/products",
     children: "Products",
     icon: <MdProductionQuantityLimits />,
+  },
+  {
+    to: "/dashboard/rsvp",
+    children: "RSVP",
+    icon: <MdRsvp />,
   },
   {
     to: "/dashboard/logout",

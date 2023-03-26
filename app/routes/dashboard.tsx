@@ -1,6 +1,18 @@
+import type { LoaderArgs } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
 import { Sidebar } from "~/components/sidebar";
 import { Header } from "~/components/ui/header";
+import { getAuthorization } from "~/utils/authorization";
+
+export async function loader({ request }: LoaderArgs) {
+  const auth = await getAuthorization(request);
+
+  if (!auth) {
+    throw redirect("/auth/signin");
+  }
+  return null;
+}
 
 export default function () {
   return (
