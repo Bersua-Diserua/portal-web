@@ -41,6 +41,9 @@ export default function () {
         <Link to="/dashboard/product/add">
           <Button>Add product</Button>
         </Link>
+        <Link to="/dashboard/product/category">
+          <Button>Categories</Button>
+        </Link>
       </div>
       <h1>Products</h1>
       <DataTable value={products} tableStyle={{ minWidth: "50rem" }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]}>

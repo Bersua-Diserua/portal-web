@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./app/**/*.{ts,tsx,jsx,js}",
-    "./node_modules/flowbite-react/**/*.js",
-  ],
+  content: ["./app/**/*.{ts,tsx,jsx,js}", "./node_modules/flowbite-react/**/*.js"],
   theme: {
     extend: {
       maxWidth: {
@@ -23,4 +20,4 @@ module.exports = {
     },
   },
   plugins: [require("@tailwindcss/typography"), require("flowbite/plugin")],
-};
+}
