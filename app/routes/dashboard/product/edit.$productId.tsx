@@ -65,7 +65,6 @@ export default function () {
   const { register, control, handleSubmit, formState, setValue } = useForm<z.infer<typeof validator>>({
     resolver: zodResolver(validator),
     defaultValues: {
-      image: product.images[0]?.url,
       name: product.name,
       price: product.price.amount,
       desc: product.desc,
