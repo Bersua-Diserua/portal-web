@@ -6,6 +6,10 @@ type Product = {
   price: { amount: number; unit: string }
   images: { id: string; url: string }[]
   id: string
+  category: {
+    id?: string
+    name?: string
+  }
 }
 
 type ListProducts = TResponse<{

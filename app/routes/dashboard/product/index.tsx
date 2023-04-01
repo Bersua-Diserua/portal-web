@@ -50,6 +50,7 @@ export default function () {
         <Column field="id" header="ID"></Column>
         <Column field="name" sortable header="Name"></Column>
         <Column field="desc" header="Description"></Column>
+        <Column field="category.name" header="Category"></Column>
         <Column header="Action" body={bodyAction}></Column>
         <Column header="Preview" body={bodyPreview}></Column>
       </DataTable>
