@@ -1,4 +1,5 @@
-import { commitSession, getSession } from "./session.server"
+import { redirect } from "@remix-run/node"
+import { commitSession, destroySession, getSession } from "./session.server"
 
 const ROLES = ["ADMIN", "SUPERADMIN"] as const
 
@@ -41,7 +42,12 @@ export async function getAuthorization(request: Request) {
 
 export async function getRequiredAuth(request: Request) {
   const session = await getAuthorization(request)
-  if (!session) throw new Error("No session found")
+  if (!session)
+    throw redirect("/", {
+      headers: {
+        "Set-Cookie": await destroySession(await getSession()),
+      },
+    })
   return session
 }
 

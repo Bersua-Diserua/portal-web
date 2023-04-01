@@ -32,7 +32,7 @@ export default function () {
   const bodyPreview = useCallback((data: typeof products[number]) => {
     const src = data.images[0]?.url
     // eslint-disable-next-line jsx-a11y/alt-text
-    return src ? <img src={src} /> : null
+    return src ? <img className="w-[5rem] aspect-square" src={src} /> : null
   }, [])
 
   return (
@@ -47,7 +47,6 @@ export default function () {
       </div>
       <h1>Products</h1>
       <DataTable value={products} tableStyle={{ minWidth: "50rem" }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]}>
-        <Column field="id" header="ID"></Column>
         <Column field="name" sortable header="Name"></Column>
         <Column field="desc" header="Description"></Column>
         <Column field="category.name" header="Category"></Column>
