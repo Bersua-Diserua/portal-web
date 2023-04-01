@@ -1,13 +1,7 @@
-import { Link, useLocation } from "@remix-run/react";
-import React from "react";
-import {
-  MdDashboard,
-  MdOutlinePeople,
-  MdLogout,
-  MdProductionQuantityLimits,
-  MdRsvp,
-} from "react-icons/md";
-import clsxm from "~/utils";
+import { Link, useLocation } from "@remix-run/react"
+import React from "react"
+import { MdDashboard, MdOutlinePeople, MdLogout, MdProductionQuantityLimits, MdRsvp } from "react-icons/md"
+import clsxm from "~/utils"
 
 const CONFIG: SidebarButonProps[] = [
   {
@@ -32,11 +26,11 @@ const CONFIG: SidebarButonProps[] = [
     icon: <MdRsvp />,
   },
   {
-    to: "/dashboard/logout",
+    to: "/logout",
     children: "Logout",
     icon: <MdLogout />,
   },
-];
+]
 
 export function Sidebar() {
   return (
@@ -46,24 +40,24 @@ export function Sidebar() {
     >
       <div className="pt-4 flex flex-col gap-4 pr-6">
         {CONFIG.map((x) => {
-          return <Button {...x} key={x.to} />;
+          return <Button {...x} key={x.to} />
         })}
       </div>
     </aside>
-  );
+  )
 }
 
 type SidebarButonProps = {
-  to: string;
-  children: React.ReactNode;
-  icon: React.ReactNode;
-  exact?: boolean;
-};
+  to: string
+  children: React.ReactNode
+  icon: React.ReactNode
+  exact?: boolean
+}
 
 export function Button(props: SidebarButonProps) {
-  const { to, children, icon, exact } = props;
-  const { pathname } = useLocation();
-  const isActive = exact ? pathname == to : pathname.startsWith(to);
+  const { to, children, icon, exact } = props
+  const { pathname } = useLocation()
+  const isActive = exact ? pathname == to : pathname.startsWith(to)
 
   return (
     <Link
@@ -79,5 +73,5 @@ export function Button(props: SidebarButonProps) {
         {children}
       </>
     </Link>
-  );
+  )
 }
