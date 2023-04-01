@@ -8,7 +8,7 @@ import primeicons from "primeicons/primeicons.css" //icons
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "New Remix App",
+  title: "Sérua Coffee & Creative",
   viewport: "width=device-width,initial-scale=1",
 })
 
