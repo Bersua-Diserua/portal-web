@@ -22,8 +22,8 @@ const CONFIG: SidebarButonProps[] = [
     icon: <MdOutlinePeople />,
   },
   {
-    to: "/dashboard/products",
-    children: "Products",
+    to: "/dashboard/product",
+    children: "Product",
     icon: <MdProductionQuantityLimits />,
   },
   {
