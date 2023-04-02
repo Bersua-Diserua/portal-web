@@ -1,12 +1,13 @@
+import { Link, useLoaderData } from "@remix-run/react"
+
+import { Button } from "primereact/button"
+import { Column } from "primereact/column"
+import { DataTable } from "primereact/datatable"
 /* eslint-disable react/jsx-key */
 import type { LoaderArgs } from "@remix-run/node"
-import { json } from "@remix-run/node"
-import { Link, useLoaderData } from "@remix-run/react"
-import { listProducts } from "~/services/product/management"
 import { getRequiredAuth } from "~/utils/authorization"
-import { DataTable } from "primereact/datatable"
-import { Column } from "primereact/column"
-import { Button } from "primereact/button"
+import { json } from "@remix-run/node"
+import { listProducts } from "~/services/product/management"
 import { useCallback } from "react"
 
 export async function loader({ request }: LoaderArgs) {
@@ -49,7 +50,7 @@ export default function () {
       <DataTable value={products} tableStyle={{ minWidth: "50rem" }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]}>
         <Column field="name" sortable header="Name"></Column>
         <Column field="desc" header="Description"></Column>
-        <Column field="category.name" header="Category"></Column>
+        <Column field="category.name" sortable header="Category"></Column>
         <Column header="Action" body={bodyAction}></Column>
         <Column header="Preview" body={bodyPreview}></Column>
       </DataTable>
