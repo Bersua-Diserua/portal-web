@@ -3,6 +3,9 @@ module.exports = {
   content: ["./app/**/*.{ts,tsx,jsx,js}", "./node_modules/flowbite-react/**/*.js"],
   theme: {
     extend: {
+      container: {
+        center: true,
+      },
       maxWidth: {
         "2xs": "16rem",
         "8xl": "90rem",

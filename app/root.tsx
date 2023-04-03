@@ -1,10 +1,10 @@
-import type { LinksFunction, MetaFunction } from "@remix-run/node"
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react"
+import type { LinksFunction, MetaFunction } from "@remix-run/node"
 
-import tailwindCss from "./styles/tailwind.css"
-import primetheme from "primereact/resources/themes/lara-light-indigo/theme.css" //theme
 import primecore from "primereact/resources/primereact.min.css" //core css
 import primeicons from "primeicons/primeicons.css" //icons
+import primetheme from "primereact/resources/themes/lara-light-indigo/theme.css" //theme
+import tailwindCss from "./styles/tailwind.css"
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -35,7 +35,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="bg-dark-1 text-white">
+      <body className="bg-gray-100 dark:bg-dark-1 text-black dark:text-white">
         <Outlet />
         <ScrollRestoration />
         <Scripts />
