@@ -29,6 +29,48 @@ export function RsvpForm() {
   const maxDate = new Date(dateNow.setMonth(dateNow.getMonth() + 1))
   const minDate = dateNow
 
+  const persons = [
+    {
+      name: "2-4",
+      value: {
+        min: 2,
+        max: 4,
+      },
+    },
+    {
+      name: "4-6",
+      value: {
+        min: 4,
+        max: 6,
+      },
+    },
+    {
+      name: "6-12",
+      value: {
+        min: 6,
+        max: 12,
+      },
+    },
+    {
+      name: "12-20",
+      value: {
+        min: 12,
+        max: 20,
+      },
+    },
+    {
+      name: "20 lebih",
+      value: {
+        min: 20,
+        max: 99,
+      },
+    },
+  ]
+  const [selectedPersons, setSelectedPersons] = useState({
+    min: 2,
+    max: 4,
+  })
+
   return (
     <>
       <form>
@@ -78,12 +120,13 @@ export function RsvpForm() {
           <label htmlFor="confirm_password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
             Jumlah Orang
           </label>
-          <input
-            type="number"
-            id="confirm_password"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Jumlah orang"
-            required
+          <Dropdown
+            value={selectedPersons}
+            onChange={(e) => setSelectedPersons(e.value)}
+            options={persons}
+            optionLabel="name"
+            placeholder="Pilih jumlah orang"
+            className="w-full md:w-14rem"
           />
         </div>
         <button
