@@ -8,14 +8,15 @@ import { useRsvp } from "~/store/use-rsvp"
 import { OrderContent } from "~/components/order-content"
 import { listProducts } from "~/services/product/list"
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request, params }: LoaderArgs) {
+  const { rsvpId } = params
   const { seats } = await getSeatManagement()
   const { products } = await listProducts()
-  return json({ seats, products })
+  return json({ seats, products, rsvpId: String(rsvpId) })
 }
 
 export default function () {
-  const { seats, products } = useLoaderData<typeof loader>()
+  const { seats, products, rsvpId } = useLoaderData<typeof loader>()
   const { selectedSeat, setSelectedSeat } = useRsvp()
   const [state, setState] = useState<"FORM" | "ORDER">("ORDER")
 
@@ -52,6 +53,7 @@ export default function () {
 
   return (
     <div className="pb-8">
+      <h1>{rsvpId}</h1>
       <SeatContainer>
         {seats.map((x) => (
           <Seat {...x} key={x.index} onClick={() => handleSeatOnClick(x)} status={selectedSeat === x.index ? "SELECTED" : x.status} />
