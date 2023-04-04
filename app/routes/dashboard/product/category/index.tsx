@@ -1,13 +1,14 @@
 import type { ActionArgs, LoaderArgs } from "@remix-run/node"
-import { json } from "@remix-run/node"
 import { Form, useFetcher, useLoaderData } from "@remix-run/react"
-import { Button } from "primereact/button"
-import type { ColumnEditorOptions } from "primereact/column"
-import { Column } from "primereact/column"
-import { DataTable } from "primereact/datatable"
 import { listCategories, recordCategory, removeCategory, updateCategory } from "~/services/product/category"
+
+import { Button } from "primereact/button"
+import { Column } from "primereact/column"
+import type { ColumnEditorOptions } from "primereact/column"
+import { DataTable } from "primereact/datatable"
 import { InputText } from "primereact/inputtext"
 import { getRequiredAuth } from "~/utils/authorization"
+import { json } from "@remix-run/node"
 
 export async function loader({ request }: LoaderArgs) {
   const { categories } = await listCategories()
@@ -65,7 +66,7 @@ export default function () {
         }}
       >
         <Column field="id" header="ID" />
-        <Column field="name" header="Name" editor={textEditor} />
+        <Column sortable field="name" header="Name" editor={textEditor} />
         <Column header="Action" />
         <Column rowEditor header="Action" headerStyle={{ width: "10%", minWidth: "8rem" }} bodyStyle={{ textAlign: "center" }} />
         <Column
