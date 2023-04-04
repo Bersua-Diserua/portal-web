@@ -9,7 +9,7 @@ type SeatContainerProps = {} & JSX.IntrinsicElements["div"]
 export function SeatContainer(props: SeatContainerProps) {
   const { className, children, ...rest } = props
   return (
-    <div {...rest} className={"border border-white w-full aspect-square rounded-md relative"}>
+    <div {...rest} className={"border border-white w-full aspect-square rounded-md relative bg-dark-2/20"}>
       {children}
     </div>
   )

@@ -66,6 +66,7 @@ export function RsvpForm() {
       },
     },
   ]
+
   const [selectedPersons, setSelectedPersons] = useState({
     min: 2,
     max: 4,
@@ -86,8 +87,9 @@ export function RsvpForm() {
             required
           />
         </div>
+        <input type="time" />
         <div className="mb-6">
-          <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
             No. Handphone
           </label>
           <input
@@ -98,16 +100,25 @@ export function RsvpForm() {
           />
         </div>
         <div className="mb-6">
-          <label htmlFor="confirm_password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <label htmlFor="date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
             Tanggal
           </label>
-          <Calendar className="w-full" value={date} onChange={(e) => setDate(e.value)} minDate={minDate} maxDate={maxDate} showIcon />
+          <Calendar
+            id="date"
+            className="w-full"
+            value={date}
+            onChange={(e) => setDate(e.value)}
+            minDate={minDate}
+            maxDate={maxDate}
+            showIcon
+          />
         </div>
         <div className="mb-6">
-          <label htmlFor="confirm_password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <label htmlFor="time" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
             Jam
           </label>
           <Dropdown
+            id="time"
             value={selectedHour}
             onChange={(e) => setSelectedHour(e.value)}
             options={hours}

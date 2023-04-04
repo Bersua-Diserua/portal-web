@@ -1,9 +1,5 @@
 import clsxm from "~/utils"
 
-type Seat = {
-  // position: Record<'top' | 'left' | 'right'>
-}
-
 export type SeatConfig = {
   index: number
   capacity: number
