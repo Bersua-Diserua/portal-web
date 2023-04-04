@@ -5,6 +5,7 @@ import { json } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import type { SeatConfig } from "~/config/rsvp"
 import { mock } from "~/config/rsvp"
+import { Sample1, SeatContainer } from "~/components/rsvp/seat-container"
 
 export async function loader({ request }: LoaderArgs) {
   return json<{
@@ -50,16 +51,17 @@ export default function () {
     <>
       <p>Table Management</p>
       <div>
-        <div className="border border-red-100 aspect-square relative">
+        <Sample1 />
+        {/* <div className="border border-red-100 aspect-square relative">
           {seats}
           <div className="border pointer-events-none w-[65%] h-[65%] absolute bottom-[50%] right-[50%] translate-x-[50%] translate-y-[50%]">
             Joglo
           </div>
-          {/* <div className="border w-[30%] h-[10%] absolute bottom-[-2%] right-[50%] translate-x-[50%]" /> */}
+          <div className="border w-[30%] h-[10%] absolute bottom-[-2%] right-[50%] translate-x-[50%]" />
           <div className="border pointer-events-none w-[25%] h-[14%] absolute bottom-[20%] right-[50%] translate-x-[50%] text-center">
             Bar
           </div>
-        </div>
+        </div> */}
       </div>
       <p>Selected</p>
       {selected && (
