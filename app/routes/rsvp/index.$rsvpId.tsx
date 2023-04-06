@@ -3,30 +3,36 @@ import { RsvpForm } from "~/components/rsvp/form"
 import { useFetcher, useLoaderData } from "@remix-run/react"
 import { useCallback, useEffect, useState } from "react"
 import { Seat, SeatContainer } from "~/components/rsvp/seat-container"
-import { getSeatManagement, type SeatProps } from "~/services/rsvp/seat-management"
+import { type SeatProps } from "~/services/rsvp/seat-management"
 import { useRsvp } from "~/store/use-rsvp"
 import { OrderContent } from "~/components/order-content"
 import { listProducts } from "~/services/product/list"
 
 export async function loader({ request, params }: LoaderArgs) {
   const { rsvpId } = params
-  // const { seats } = await getSeatManagement()
   const products = await listProducts()
   return json({ products, rsvpId: String(rsvpId) })
 }
 
 export default function () {
-  const { products, rsvpId } = useLoaderData<typeof loader>()
+  const { products } = useLoaderData<typeof loader>()
   const [seats, setSeats] = useState<SeatProps[] | null>(null)
   const { selectedSeat, setSelectedSeat } = useRsvp()
-  const [state, setState] = useState<"FORM" | "ORDER" | "CONFIRMATION">("ORDER")
+  const [state, setState] = useState<"FORM" | "ORDER" | "CONFIRMATION">("FORM")
   const fetcherSeat = useFetcher()
+  const { personalData } = useRsvp()
+
+  const { capacity } = personalData
+
+  const doFetchSeat = useCallback((date: string) => {
+    fetcherSeat.load(`/rsvp/seat?date=` + date)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (!window) return
-    const date = new Date().toISOString()
-    fetcherSeat.load(`/rsvp/seat?date=` + date)
-  }, [])
+    doFetchSeat(new Date().toISOString())
+  }, [doFetchSeat])
 
   useEffect(() => {
     if (fetcherSeat.data) {
@@ -34,6 +40,10 @@ export default function () {
       setSeats(fetcherSeat.data?.seats)
     }
   }, [fetcherSeat.data])
+
+  useEffect(() => {
+    doFetchSeat(personalData.date)
+  }, [doFetchSeat, personalData.date])
 
   const handleSeatOnClick = useCallback(
     (config: SeatProps) => {
@@ -65,8 +75,6 @@ export default function () {
     },
     [state, setState]
   )
-
-  const [activeIndex, setActiveIndex] = useState(0)
 
   return (
     <div className="flex flex-col gap-y-5 pb-8">
@@ -112,7 +120,19 @@ export default function () {
           <div className="flex flex-col gap-y-5">
             <SeatContainer>
               {seats?.map((x) => (
-                <Seat {...x} key={x.index} onClick={() => handleSeatOnClick(x)} status={selectedSeat === x.index ? "SELECTED" : x.status} />
+                <Seat
+                  {...x}
+                  key={x.index}
+                  onClick={() => handleSeatOnClick(x)}
+                  status={(() => {
+                    if (capacity) {
+                      if (capacity.max > x.capacity?.max || capacity.min < x.capacity?.min) {
+                        return "LOCKED"
+                      }
+                    }
+                    return selectedSeat === x.index ? "SELECTED" : x.status
+                  })()}
+                />
               ))}
             </SeatContainer>
             <RsvpForm />
@@ -122,11 +142,11 @@ export default function () {
         <OrderContent products={products} />
       )}
       <div className="flex flex-row items-center bottom-0 sticky gap-x-5">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+        {/* {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
           <div key={i} className="bg-serua px-5 py-2 shadow-sm tracking-wider text-white rounded-full mb-8 w-max">
             FAB
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   )
