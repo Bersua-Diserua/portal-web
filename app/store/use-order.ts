@@ -9,7 +9,7 @@ type Item = {
 interface OrderState {
   products: Map<string, Item>
   incrementItem: (idProduct: string, price: number) => void
-  decrementItem: (idProduct: string) => void
+  decrementItem: (idProduct: string, price: number) => void
   detailsItem: (id: string) => Item
   setNote: (id: string, note: string, price: number) => void
   debug: () => any
@@ -35,9 +35,18 @@ const useOrder = create<OrderState>((set, get) => ({
 
     set({ products })
   },
-  decrementItem(productId) {
+  decrementItem(id, price) {
     const { products } = get()
-    const exist = products.has(productId)
+    const exist = products.has(id)
+
+    if (exist) {
+      const item = products.get(id)!
+      if (item.count > 0) {
+        item.count--
+      }
+    }
+
+    set({ products })
   },
   detailsItem(id) {
     const { products } = get()

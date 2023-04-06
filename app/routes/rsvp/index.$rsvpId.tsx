@@ -18,7 +18,7 @@ export async function loader({ request, params }: LoaderArgs) {
 export default function () {
   const { seats, products, rsvpId } = useLoaderData<typeof loader>()
   const { selectedSeat, setSelectedSeat } = useRsvp()
-  const [state, setState] = useState<"FORM" | "ORDER">("ORDER")
+  const [state, setState] = useState<"FORM" | "ORDER" | "CONFIRMATION">("FORM")
 
   const handleSeatOnClick = useCallback(
     (config: SeatProps) => {
@@ -51,19 +51,47 @@ export default function () {
     [state, setState]
   )
 
+  const [activeIndex, setActiveIndex] = useState(0)
+
   return (
     <div className="pb-8">
-      <h1>{rsvpId}</h1>
       <SeatContainer>
         {seats.map((x) => (
           <Seat {...x} key={x.index} onClick={() => handleSeatOnClick(x)} status={selectedSeat === x.index ? "SELECTED" : x.status} />
         ))}
       </SeatContainer>
-      <div className="mt-8">
-        <div className="p-2 flex flex-row gap-5">
-          <button onClick={() => handleNavOnClick("FORM")}>Data diri</button>
-          <button onClick={() => handleNavOnClick("ORDER")}>Pesanan</button>
-        </div>
+      <div className="mt-16">
+        <ol className="flex justify-around items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 mb-6">
+          <li
+            className={`flex items-center cursor-pointer ${state === "FORM" && "text-blue-600 dark:text-blue-500"}`}
+            onClick={() => handleNavOnClick("FORM")}
+          >
+            <span className="flex items-center justify-center w-5 h-5 mr-2 text-xs border border-blue-600 rounded-full shrink-0 dark:border-blue-500">
+              1
+            </span>
+            Data Diri
+          </li>
+          <li
+            className={`flex items-center cursor-pointer ${state === "ORDER" && "text-blue-600 dark:text-blue-500"}`}
+            onClick={() => handleNavOnClick("ORDER")}
+          >
+            <span className="flex items-center justify-center w-5 h-5 mr-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+              2
+            </span>
+            Pesanan
+          </li>
+          <li
+            className={`flex items-center cursor-pointer ${state === "CONFIRMATION" && "text-blue-600 dark:text-blue-500"}`}
+            onClick={() => handleNavOnClick("FORM")}
+          >
+            <span className="flex items-center justify-center w-5 h-5 mr-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+              3
+            </span>
+            Confirmation
+          </li>
+        </ol>
+
+        {/* <Steps model={items} activeIndex={activeIndex} onSelect={(e) => setActiveIndex(e.index)} readOnly={false} /> */}
         {state === "FORM" ? <RsvpForm /> : <OrderContent products={products} />}
       </div>
     </div>

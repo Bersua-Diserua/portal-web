@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/alt-text */
 
-import { useCallback, useRef } from "react"
-import type { Product } from "~/services/product/list"
-import { useOrder } from "~/store/use-order"
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog"
-import { Toast } from "primereact/toast"
+import { useCallback, useRef } from "react"
+
 import { Button } from "primereact/button"
+import type { Product } from "~/services/product/list"
+import { Toast } from "primereact/toast"
+import { useOrder } from "~/store/use-order"
 
 type OrderContentProps = {
   products: Product[]
@@ -76,7 +77,7 @@ const formatter = new Intl.NumberFormat("id-ID", {
 })
 
 function ProductPreview(props: ProductPreviewProps) {
-  const { incrementItem, detailsItem, setNote } = useOrder()
+  const { incrementItem, detailsItem, setNote, decrementItem } = useOrder()
   const { name, desc, price, id, images } = props
 
   const img = images[0].url
@@ -86,6 +87,10 @@ function ProductPreview(props: ProductPreviewProps) {
   const handleIncrement = useCallback(() => {
     incrementItem(id, price.amount)
   }, [id, incrementItem, price.amount])
+
+  const handleDecrement = useCallback(() => {
+    decrementItem(id, price.amount)
+  }, [id, decrementItem, price.amount])
 
   return (
     <div className="flex border gap-2 max-h-[8rem] bg-red-500 items-center p-2">
@@ -98,7 +103,7 @@ function ProductPreview(props: ProductPreviewProps) {
         <p>{formatter.format(price.amount)}</p>
         <input value={note} onChange={(e) => setNote(id, e.target.value, price.amount)} />
         <div className="flex gap-2 ml-auto w-min">
-          <button>-</button>
+          <button onClick={handleDecrement}>-</button>
           <p>{count}</p>
           <button onClick={handleIncrement}>+</button>
         </div>

@@ -72,6 +72,8 @@ export function RsvpForm() {
     max: 4,
   })
 
+  const [time, setTime] = useState<Nullable<string | Date | Date[]>>(null)
+
   return (
     <>
       <form>
@@ -87,7 +89,6 @@ export function RsvpForm() {
             required
           />
         </div>
-        <input type="time" />
         <div className="mb-6">
           <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
             No. Handphone
@@ -117,15 +118,7 @@ export function RsvpForm() {
           <label htmlFor="time" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
             Jam
           </label>
-          <Dropdown
-            id="time"
-            value={selectedHour}
-            onChange={(e) => setSelectedHour(e.value)}
-            options={hours}
-            optionLabel="name"
-            placeholder="Pilih jam yang diinginkan"
-            className="w-full md:w-14rem"
-          />
+          <Calendar className="w-full" id="calendar-timeonly" value={time} onChange={(e) => setTime(e.value)} timeOnly />
         </div>
         <div className="mb-6">
           <label htmlFor="confirm_password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">

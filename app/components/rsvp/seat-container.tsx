@@ -1,5 +1,6 @@
-import { useCallback, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
+import { useCallback, useState } from "react"
+
 import clsxm from "~/utils"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -9,7 +10,7 @@ type SeatContainerProps = {} & JSX.IntrinsicElements["div"]
 export function SeatContainer(props: SeatContainerProps) {
   const { className, children, ...rest } = props
   return (
-    <div {...rest} className={"border border-white w-full aspect-square rounded-md relative bg-dark-2/20"}>
+    <div {...rest} className={"border border-white w-full aspect-square rounded-md relative bg-gray-900"}>
       {children}
     </div>
   )
