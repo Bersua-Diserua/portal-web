@@ -22,7 +22,7 @@ type SeatProps = {} & JSX.IntrinsicElements["button"] & {
     position?: SeatPosition
     size?: "large" | "medium" | "small" | "long"
     index: number
-    status: "OPEN" | "RESERVED" | "SELECTED"
+    status: "OPEN" | "RESERVED" | "SELECTED" | "LOCKED"
     capacity: {
       max: number
       min: number
@@ -55,6 +55,7 @@ export function Seat(props: SeatProps) {
     OPEN: "bg-green-400",
     RESERVED: "bg-red-300",
     SELECTED: "bg-green-800",
+    LOCKED: "bg-red-600",
   }
 
   return (
