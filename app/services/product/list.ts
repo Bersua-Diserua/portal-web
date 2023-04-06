@@ -25,5 +25,12 @@ type ResProducts = TResponse<{
 export async function listProducts() {
   const { data } = await api.get<ResProducts>("/product")
 
-  return data.payload
+  const groupByCategory = (data.payload.products as Array<any>).reduce((group, product) => {
+    const { category } = product
+    group[category.name] = group[category.name] ?? []
+    group[category.name].push(product)
+    return group
+  }, {})
+
+  return groupByCategory
 }

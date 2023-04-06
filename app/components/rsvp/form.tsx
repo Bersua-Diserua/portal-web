@@ -1,6 +1,7 @@
 import { Calendar } from "primereact/calendar"
 import { Dropdown } from "primereact/dropdown"
 import type { Nullable } from "primereact/ts-helpers"
+import moment from "moment"
 import { useState } from "react"
 
 export function RsvpForm() {
@@ -24,10 +25,12 @@ export function RsvpForm() {
   ]
   const [selectedHour, setSelectedHour] = useState("15.00")
 
-  const dateNow = new Date()
+  const dateNow = moment().toDate()
   const [date, setDate] = useState<Nullable<string | Date | Date[]>>(dateNow)
-  const maxDate = new Date(dateNow.setMonth(dateNow.getMonth() + 1))
-  const minDate = dateNow
+  const utilsDate = {
+    max: moment().add(30, "days").toDate(),
+    min: dateNow,
+  }
 
   const persons = [
     {
@@ -109,8 +112,8 @@ export function RsvpForm() {
             className="w-full"
             value={date}
             onChange={(e) => setDate(e.value)}
-            minDate={minDate}
-            maxDate={maxDate}
+            minDate={utilsDate.min}
+            maxDate={utilsDate.max}
             showIcon
           />
         </div>

@@ -12,6 +12,7 @@ module.exports = {
       },
     },
     colors: {
+      serua: "#9C7A54",
       dark: {
         1: "#171821",
         2: "#2B2B36",

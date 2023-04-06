@@ -11,14 +11,14 @@ import { listProducts } from "~/services/product/list"
 export async function loader({ request, params }: LoaderArgs) {
   const { rsvpId } = params
   const { seats } = await getSeatManagement()
-  const { products } = await listProducts()
+  const products = await listProducts()
   return json({ seats, products, rsvpId: String(rsvpId) })
 }
 
 export default function () {
   const { seats, products, rsvpId } = useLoaderData<typeof loader>()
   const { selectedSeat, setSelectedSeat } = useRsvp()
-  const [state, setState] = useState<"FORM" | "ORDER" | "CONFIRMATION">("FORM")
+  const [state, setState] = useState<"FORM" | "ORDER" | "CONFIRMATION">("ORDER")
 
   const handleSeatOnClick = useCallback(
     (config: SeatProps) => {
@@ -54,45 +54,64 @@ export default function () {
   const [activeIndex, setActiveIndex] = useState(0)
 
   return (
-    <div className="pb-8">
-      <SeatContainer>
-        {seats.map((x) => (
-          <Seat {...x} key={x.index} onClick={() => handleSeatOnClick(x)} status={selectedSeat === x.index ? "SELECTED" : x.status} />
-        ))}
-      </SeatContainer>
-      <div className="mt-16">
-        <ol className="flex justify-around items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 mb-6">
-          <li
-            className={`flex items-center cursor-pointer ${state === "FORM" && "text-blue-600 dark:text-blue-500"}`}
-            onClick={() => handleNavOnClick("FORM")}
+    <div className="flex flex-col gap-y-5 pb-8">
+      <p className="text-xl">Serua Reservasi</p>
+      <ol className="flex justify-around items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4">
+        <li className={`flex items-center cursor-pointer ${state === "FORM" && "text-serua"}`} onClick={() => handleNavOnClick("FORM")}>
+          <span
+            className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border rounded-full shrink-0 ${
+              state === "FORM" ? "border-serua" : "border-gray-500"
+            }`}
           >
-            <span className="flex items-center justify-center w-5 h-5 mr-2 text-xs border border-blue-600 rounded-full shrink-0 dark:border-blue-500">
-              1
-            </span>
-            Data Diri
-          </li>
-          <li
-            className={`flex items-center cursor-pointer ${state === "ORDER" && "text-blue-600 dark:text-blue-500"}`}
-            onClick={() => handleNavOnClick("ORDER")}
+            1
+          </span>
+          Data Diri
+        </li>
+        <li className={`flex items-center cursor-pointer ${state === "ORDER" && "text-serua"}`} onClick={() => handleNavOnClick("ORDER")}>
+          <span
+            className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border rounded-full shrink-0 ${
+              state === "ORDER" ? "border-serua" : "border-gray-500"
+            }`}
           >
-            <span className="flex items-center justify-center w-5 h-5 mr-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-              2
-            </span>
-            Pesanan
-          </li>
-          <li
-            className={`flex items-center cursor-pointer ${state === "CONFIRMATION" && "text-blue-600 dark:text-blue-500"}`}
-            onClick={() => handleNavOnClick("FORM")}
+            2
+          </span>
+          Pesanan
+        </li>
+        <li
+          className={`flex items-center cursor-pointer ${state === "CONFIRMATION" && "text-serua"}`}
+          onClick={() => handleNavOnClick("CONFIRMATION")}
+        >
+          <span
+            className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border rounded-full shrink-0 ${
+              state === "CONFIRMATION" ? "border-serua" : "border-gray-500"
+            }`}
           >
-            <span className="flex items-center justify-center w-5 h-5 mr-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-              3
-            </span>
-            Confirmation
-          </li>
-        </ol>
+            3
+          </span>
+          Confirmation
+        </li>
+      </ol>
 
-        {/* <Steps model={items} activeIndex={activeIndex} onSelect={(e) => setActiveIndex(e.index)} readOnly={false} /> */}
-        {state === "FORM" ? <RsvpForm /> : <OrderContent products={products} />}
+      {state === "FORM" ? (
+        <>
+          <div className="flex flex-col gap-y-5">
+            <SeatContainer>
+              {seats.map((x) => (
+                <Seat {...x} key={x.index} onClick={() => handleSeatOnClick(x)} status={selectedSeat === x.index ? "SELECTED" : x.status} />
+              ))}
+            </SeatContainer>
+            <RsvpForm />
+          </div>
+        </>
+      ) : (
+        <OrderContent products={products} />
+      )}
+      <div className="flex flex-row items-center bottom-0 sticky gap-x-5">
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+          <div key={i} className="bg-serua px-5 py-2 shadow-sm tracking-wider text-white rounded-full mb-8 w-max">
+            FAB
+          </div>
+        ))}
       </div>
     </div>
   )

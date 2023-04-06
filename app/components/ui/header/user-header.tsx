@@ -32,7 +32,10 @@ export function UserHeader() {
   return (
     <header className="sticky top-0 z-40 flex-none w-full mx-auto border-b border-gray-200 bg-gray-900 text-white py-4">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full px-3 py-3 mx-auto max-w-8xl lg:px-4 gap-y-2">
-        <h1 className="text-2xl">logo soon</h1>
+        <div className="flex flex-row items-center gap-x-4">
+          <img className="h-12 w-12" src="https://ik.imagekit.io/bersuadiserua22/icons/Serua-putih-300x300.png" alt="" />
+          <p className="text-xl font-semibold">Reservation</p>
+        </div>
         <div className="flex flex-row items-center justify-center gap-5">
           {NAV_HEADER.map((val, i) => (
             <a key={i} className="capitalize" href={`${SERUA_MAIN_DOMAIN}${val.link}`}>
