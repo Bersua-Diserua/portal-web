@@ -4,7 +4,12 @@ import type { Nullable } from "primereact/ts-helpers"
 import moment from "moment"
 import { useState } from "react"
 
-export function RsvpForm() {
+type RsvpFormProps = {
+  onChangeDate: (date: string) => void
+}
+
+export function RsvpForm(props: RsvpFormProps) {
+  const { onChangeDate } = props
   const hours = [
     {
       name: "15.00",
@@ -111,7 +116,11 @@ export function RsvpForm() {
             id="date"
             className="w-full"
             value={date}
-            onChange={(e) => setDate(e.value)}
+            onChange={(e) => {
+              if (!e.value) return
+              setDate(e.value)
+              onChangeDate(new Date(e.value.toString()).toISOString())
+            }}
             minDate={utilsDate.min}
             maxDate={utilsDate.max}
             showIcon
@@ -129,7 +138,9 @@ export function RsvpForm() {
           </label>
           <Dropdown
             value={selectedPersons}
-            onChange={(e) => setSelectedPersons(e.value)}
+            onChange={(e) => {
+              setSelectedPersons(e.value)
+            }}
             options={persons}
             optionLabel="name"
             placeholder="Pilih jumlah orang"

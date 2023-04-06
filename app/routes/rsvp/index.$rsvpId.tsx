@@ -3,7 +3,7 @@ import { RsvpForm } from "~/components/rsvp/form"
 import { useFetcher, useLoaderData } from "@remix-run/react"
 import { useCallback, useEffect, useState } from "react"
 import { Seat, SeatContainer } from "~/components/rsvp/seat-container"
-import { getSeatManagement, type SeatProps } from "~/services/rsvp/seat-management"
+import { type SeatProps } from "~/services/rsvp/seat-management"
 import { useRsvp } from "~/store/use-rsvp"
 import { OrderContent } from "~/components/order-content"
 import { listProducts } from "~/services/product/list"
@@ -22,11 +22,14 @@ export default function () {
   const [state, setState] = useState<"FORM" | "ORDER" | "CONFIRMATION">("ORDER")
   const fetcherSeat = useFetcher()
 
-  useEffect(() => {
-    if (!window) return
-    const date = new Date().toISOString()
+  const doFetchSeat = useCallback((date: string) => {
     fetcherSeat.load(`/rsvp/seat?date=` + date)
   }, [])
+
+  useEffect(() => {
+    if (!window) return
+    doFetchSeat(new Date().toISOString())
+  }, [doFetchSeat])
 
   useEffect(() => {
     if (fetcherSeat.data) {
@@ -115,7 +118,7 @@ export default function () {
                 <Seat {...x} key={x.index} onClick={() => handleSeatOnClick(x)} status={selectedSeat === x.index ? "SELECTED" : x.status} />
               ))}
             </SeatContainer>
-            <RsvpForm />
+            <RsvpForm onChangeDate={(date) => doFetchSeat(date)} />
           </div>
         </>
       ) : (
