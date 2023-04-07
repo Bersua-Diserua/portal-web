@@ -50,11 +50,6 @@ export default function () {
   }, [])
 
   useEffect(() => {
-    if (!window) return
-    doFetchSeat(new Date().toISOString())
-  }, [doFetchSeat])
-
-  useEffect(() => {
     if (fetcherSeat.data) {
       console.log(fetcherSeat.data)
       setSeats(fetcherSeat.data?.seats)
@@ -63,6 +58,7 @@ export default function () {
   }, [fetcherSeat.data, setSelectedSeat])
 
   useEffect(() => {
+    if (!window) return
     doFetchSeat(personalData.date.toISOString())
   }, [doFetchSeat, personalData.date])
 
