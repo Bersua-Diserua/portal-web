@@ -6,6 +6,15 @@ type Item = {
   price: number
 }
 
+export type ProductsSubmission = {
+  amount: number
+  products: Array<{
+    productId: string
+    note: string
+    amount: number
+  }>
+}
+
 interface OrderState {
   products: Map<string, Item>
   incrementItem: (idProduct: string, price: number) => void
@@ -14,6 +23,7 @@ interface OrderState {
   setNote: (id: string, note: string, price: number) => void
   debug: () => any
   calc: () => number
+  toJson: () => ProductsSubmission
 }
 
 const useOrder = create<OrderState>((set, get) => ({
@@ -84,8 +94,34 @@ const useOrder = create<OrderState>((set, get) => ({
     console.log({ count })
   },
   calc() {
-    const { products } = get()
+    // const { products } = get()
     return 0
+  },
+  toJson() {
+    const { products } = get()
+    let amount = 0
+    const summary = Array.from(products).reduce<ProductsSubmission["products"]>((prev, curr) => {
+      const [key, val] = curr
+      amount += val.count * val.price
+      return [
+        ...prev,
+        {
+          productId: key,
+          amount: val.count,
+          note: val.note,
+        },
+      ]
+    }, [])
+
+    console.log({
+      amount,
+      products: summary,
+    })
+
+    return {
+      products: summary,
+      amount,
+    }
   },
 }))
 

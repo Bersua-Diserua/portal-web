@@ -1,3 +1,5 @@
+import type { ActionArgs } from "@remix-run/node"
+import { redirect } from "@remix-run/node"
 import { json, type LoaderArgs } from "@remix-run/node"
 import { RsvpForm } from "~/components/rsvp/form"
 import { useFetcher, useLoaderData } from "@remix-run/react"
@@ -7,22 +9,40 @@ import { type SeatProps } from "~/services/rsvp/seat-management"
 import { useRsvp } from "~/store/use-rsvp"
 import { OrderContent } from "~/components/order-content"
 import { listProducts } from "~/services/product/list"
+import { Button } from "primereact/button"
+import { parseStringify, useSubmitStringify } from "~/utils/use-submit–stringify"
+import { postSubmitRsvp } from "~/services/rsvp/submission"
+import { getObtainRsvpTicket } from "~/services/rsvp/obtain-ticket-rsvp"
 
 export async function loader({ request, params }: LoaderArgs) {
   const { rsvpId } = params
+  const ticket = await getObtainRsvpTicket(String(rsvpId))
+
+  if (ticket.rsvp.status != "TICKET") {
+    throw new Error("Not found")
+  }
+
   const products = await listProducts()
   return json({ products, rsvpId: String(rsvpId) })
 }
 
-export default function () {
-  const { products } = useLoaderData<typeof loader>()
-  const [seats, setSeats] = useState<SeatProps[] | null>(null)
-  const { selectedSeat, setSelectedSeat } = useRsvp()
-  const [state, setState] = useState<"FORM" | "ORDER" | "CONFIRMATION">("FORM")
-  const fetcherSeat = useFetcher()
-  const { personalData } = useRsvp()
+export async function action({ request, params }: ActionArgs) {
+  const { rsvpId } = params
+  const payload = await parseStringify<TObjUnknown>(request)
 
-  const { capacity } = personalData
+  await postSubmitRsvp(String(rsvpId), payload)
+  return redirect("/")
+}
+
+export default function () {
+  const { products, rsvpId } = useLoaderData<typeof loader>()
+  const [seats, setSeats] = useState<SeatProps[] | null>(null)
+  const { setSelectedSeat } = useRsvp()
+  const fetcherSeat = useFetcher()
+  const submitRsvp = useSubmitStringify()
+  const { personalData, step, setStep, submit } = useRsvp()
+
+  // const { capacity } = personalData
 
   const doFetchSeat = useCallback((date: string) => {
     fetcherSeat.load(`/rsvp/seat?date=` + date)
@@ -38,43 +58,17 @@ export default function () {
     if (fetcherSeat.data) {
       console.log(fetcherSeat.data)
       setSeats(fetcherSeat.data?.seats)
+      setSelectedSeat(null)
     }
-  }, [fetcherSeat.data])
+  }, [fetcherSeat.data, setSelectedSeat])
 
   useEffect(() => {
-    doFetchSeat(personalData.date)
+    doFetchSeat(personalData.date.toISOString())
   }, [doFetchSeat, personalData.date])
 
-  const handleSeatOnClick = useCallback(
-    (config: SeatProps) => {
-      // const capacityRequest = watch("capacity")
-
-      // if (capacityRequest > config.capacity.max) {
-      //   alert("No more capacity")
-      //   return
-      // }
-
-      if (config.status === "RESERVED") {
-        return alert(`Already reserved`)
-      }
-
-      if (selectedSeat === config.index) {
-        setSelectedSeat(null)
-        return
-      }
-
-      setSelectedSeat(config.index)
-    },
-    [selectedSeat, setSelectedSeat]
-  )
-
-  const handleNavOnClick = useCallback(
-    (select: typeof state) => {
-      if (state == select) return
-      setState(select)
-    },
-    [state, setState]
-  )
+  const handleSubmitRsvp = () => {
+    submitRsvp({ ...submit(), rsvpId }, { method: "post" })
+  }
 
   return (
     <div className="flex flex-col gap-y-5 pb-8">
@@ -85,20 +79,20 @@ export default function () {
         <p className="text-lg">Silahkan isi formulir untuk melakukan reservasi.</p>
       </div>
       <ol className="flex justify-around items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4">
-        <li className={`flex items-center cursor-pointer ${state === "FORM" && "text-serua"}`} onClick={() => handleNavOnClick("FORM")}>
+        <li className={`flex items-center cursor-pointer ${step === "FORM" && "text-serua"}`} onClick={() => setStep("FORM")}>
           <span
             className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border rounded-full shrink-0 ${
-              state === "FORM" ? "border-serua" : "border-gray-500"
+              step === "FORM" ? "border-serua" : "border-gray-500"
             }`}
           >
             1
           </span>
           Data Diri
         </li>
-        <li className={`flex items-center cursor-pointer ${state === "ORDER" && "text-serua"}`} onClick={() => handleNavOnClick("ORDER")}>
+        <li className={`flex items-center cursor-pointer ${step === "ORDER" && "text-serua"}`} onClick={() => setStep("ORDER")}>
           <span
             className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border rounded-full shrink-0 ${
-              state === "ORDER" ? "border-serua" : "border-gray-500"
+              step === "ORDER" ? "border-serua" : "border-gray-500"
             }`}
           >
             2
@@ -106,12 +100,12 @@ export default function () {
           Pesanan
         </li>
         <li
-          className={`flex items-center cursor-pointer ${state === "CONFIRMATION" && "text-serua"}`}
-          onClick={() => handleNavOnClick("CONFIRMATION")}
+          className={`flex items-center cursor-pointer ${step === "CONFIRMATION" && "text-serua"}`}
+          onClick={() => setStep("CONFIRMATION")}
         >
           <span
             className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border rounded-full shrink-0 ${
-              state === "CONFIRMATION" ? "border-serua" : "border-gray-500"
+              step === "CONFIRMATION" ? "border-serua" : "border-gray-500"
             }`}
           >
             3
@@ -120,24 +114,12 @@ export default function () {
         </li>
       </ol>
 
-      {state === "FORM" ? (
+      {step === "FORM" ? (
         <>
           <div className="flex flex-col gap-y-5">
             <SeatContainer>
               {seats?.map((x) => (
-                <Seat
-                  {...x}
-                  key={x.index}
-                  onClick={() => handleSeatOnClick(x)}
-                  status={(() => {
-                    if (capacity) {
-                      if (capacity.max > x.capacity?.max || capacity.min < x.capacity?.min) {
-                        return "LOCKED"
-                      }
-                    }
-                    return selectedSeat === x.index ? "SELECTED" : x.status
-                  })()}
-                />
+                <Seat {...x} key={x.index} />
               ))}
             </SeatContainer>
             <RsvpForm />
@@ -147,11 +129,7 @@ export default function () {
         <OrderContent products={products} />
       )}
       <div className="flex flex-row items-center bottom-0 sticky gap-x-5">
-        {/* {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-          <div key={i} className="bg-serua px-5 py-2 shadow-sm tracking-wider text-white rounded-full mb-8 w-max">
-            FAB
-          </div>
-        ))} */}
+        <Button onClick={handleSubmitRsvp}>Submit</Button>
       </div>
     </div>
   )
