@@ -23,5 +23,11 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/typography"), require("flowbite/plugin")],
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("flowbite/plugin"),
+    function ({ addVariant }) {
+      addVariant("supports-backdrop-blur", "@supports (backdrop-filter: blur(0)) or (-webkit-backdrop-filter: blur(0))")
+    },
+  ],
 }
