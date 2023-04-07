@@ -27,7 +27,7 @@ export const hours = [
 ]
 
 export function RsvpForm() {
-  const { personalData, setPartial, setPersonalData } = useRsvp()
+  const { personalData, setPartial, setPersonalData, setSelectedSeat } = useRsvp()
   const { watch, setValue, register, getValues } = useForm<PersonalDataSchema>({
     resolver: zodResolver(personalDataSchema),
     defaultValues: personalData,
@@ -44,86 +44,96 @@ export function RsvpForm() {
   }, [getValues, setPersonalData])
 
   return (
-    <>
-      <form>
-        <div className="mb-6">
-          <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Nama
-          </label>
-          <input
-            {...register("name")}
-            type="email"
-            id="email"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="john.doe@company.com"
-            required
-          />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            No. Handphone
-          </label>
-          <input
-            {...register("phoneNumber")}
-            type="text"
-            id="phone"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            required
-          />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Tanggal
-          </label>
-          <Calendar
-            id="date"
-            className="w-full"
-            value={getValues("date")}
-            onChange={(e) => {
-              if (!e.value) return
-              setValue("date", new Date(e.value.toString()))
-              setPartial("date", new Date(e.value.toString()))
-            }}
-            minDate={utilsDate.min}
-            maxDate={utilsDate.max}
-            showIcon
-          />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="time" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Jam
-          </label>
-          <Calendar
-            className="w-full"
-            id="calendar-timeonly"
-            value={watch("time")}
-            onChange={(e) => {
-              if (!e.value) return
-              setValue("time", new Date(e.value.toString()))
-            }}
-            timeOnly
-          />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="confirm_password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Jumlah Orang
-          </label>
-          <Dropdown
-            value={watch("capacity")}
-            onChange={(e) => setValue("capacity", e.target.value)}
-            options={persons}
-            optionLabel="name"
-            placeholder="Pilih jumlah orang"
-            className="w-full md:w-14rem"
-          />
-        </div>
-        {/* <button
-          type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Submit
-        </button> */}
-      </form>
-    </>
+    <form>
+      <div className="mb-6">
+        <label htmlFor="confirm_password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Jumlah Orang
+        </label>
+        <Dropdown
+          value={watch("capacity")}
+          onChange={(e) => {
+            setPartial("capacity", e.target.value)
+            setValue("capacity", e.target.value)
+            setSelectedSeat(null)
+          }}
+          options={persons}
+          optionLabel="name"
+          placeholder="Pilih jumlah orang"
+          className="w-full md:w-14rem"
+        />
+      </div>
+      <div className="mb-6">
+        <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Nama
+        </label>
+        <input
+          {...register("name")}
+          type="text"
+          id="email"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Masukkan namamu"
+          required
+        />
+      </div>
+      <div className="mb-6">
+        <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Email
+        </label>
+        <input
+          {...register("email")}
+          type="email"
+          id="email"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Masukkan email"
+          required
+        />
+      </div>
+      <div className="mb-6">
+        <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          No. Handphone
+        </label>
+        <input
+          {...register("phoneNumber")}
+          placeholder="08xxxxxx"
+          type="text"
+          id="phone"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          required
+        />
+      </div>
+      <div className="mb-6">
+        <label htmlFor="date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Tanggal
+        </label>
+        <Calendar
+          id="date"
+          className="w-full"
+          value={getValues("date")}
+          onChange={(e) => {
+            if (!e.value) return
+            setValue("date", new Date(e.value.toString()))
+            setPartial("date", new Date(e.value.toString()))
+          }}
+          minDate={utilsDate.min}
+          maxDate={utilsDate.max}
+          showIcon
+        />
+      </div>
+      <div className="mb-6">
+        <label htmlFor="time" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Jam
+        </label>
+        <Calendar
+          className="w-full"
+          id="calendar-timeonly"
+          value={watch("time")}
+          onChange={(e) => {
+            if (!e.value) return
+            setValue("time", new Date(e.value.toString()))
+          }}
+          timeOnly
+        />
+      </div>
+    </form>
   )
 }

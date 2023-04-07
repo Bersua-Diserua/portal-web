@@ -1,11 +1,7 @@
 import { useMemo, useState } from "react"
-
-import type { LoaderArgs } from "@remix-run/node"
 import type { SeatConfig } from "~/config/rsvp"
 import clsxm from "~/utils"
-import { json } from "@remix-run/node"
 import { mock } from "~/config/rsvp"
-import { useLoaderData } from "@remix-run/react"
 
 export function RsvpSeat({
   seatsBooked,
