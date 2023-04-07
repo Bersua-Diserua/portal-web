@@ -40,9 +40,7 @@ export function RsvpForm() {
   }
 
   useEffect(() => {
-    return () => {
-      setPersonalData(getValues())
-    }
+    return () => setPersonalData(getValues())
   }, [getValues, setPersonalData])
 
   return (

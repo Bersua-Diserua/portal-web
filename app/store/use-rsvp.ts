@@ -75,9 +75,7 @@ const useRsvp = create<RsvpState>((set, get) => ({
     capacity: persons[0].value,
   },
   setPersonalData(data) {
-    set({
-      personalData: data,
-    })
+    set({ personalData: data })
   },
   setPartial(key, val) {
     const { personalData } = get()
