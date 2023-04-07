@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react"
+
 type NavHeader = {
   title: string
   link: string
@@ -29,8 +31,25 @@ const NAV_HEADER: NavHeader[] = [
 ]
 
 export function UserHeader() {
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const scrollFunction = () => {
+      if (Math.round(window.scrollY) == 0) {
+        setScrolled(false)
+      } else {
+        setScrolled(true)
+      }
+    }
+    window.addEventListener("scroll", scrollFunction)
+    return () => window.removeEventListener("scroll", scrollFunction)
+  }, [])
   return (
-    <header className="sticky top-0 z-40 flex-none w-full mx-auto border-b border-gray-200 bg-gray-900 text-white py-4">
+    <header
+      className={`sticky top-0 z-40 flex-none w-full mx-auto text-white py-4 transition-all duration-200 supports-backdrop-blur:backdrop-blur ${
+        scrolled ? "supports-backdrop-blur:bg-[#1e293b]/95 py-0" : "supports-backdrop-blur:bg-[#1e293b] py-5"
+      }`}
+    >
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full px-3 py-3 mx-auto max-w-8xl lg:px-4 gap-y-2">
         <div className="flex flex-row items-center gap-x-4">
           <img className="h-12 w-12" src="https://ik.imagekit.io/bersuadiserua22/icons/Serua-putih-300x300.png" alt="" />

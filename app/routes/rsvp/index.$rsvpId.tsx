@@ -78,7 +78,12 @@ export default function () {
 
   return (
     <div className="flex flex-col gap-y-5 pb-8">
-      <p className="text-xl">Serua Reservasi</p>
+      <div className="flex flex-col gap-y-2 my-5">
+        <p className="text-2xl font-bold">
+          Halo Kawula <span className="text-serua">Sérua</span>!
+        </p>
+        <p className="text-lg">Silahkan isi formulir untuk melakukan reservasi.</p>
+      </div>
       <ol className="flex justify-around items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4">
         <li className={`flex items-center cursor-pointer ${state === "FORM" && "text-serua"}`} onClick={() => handleNavOnClick("FORM")}>
           <span
