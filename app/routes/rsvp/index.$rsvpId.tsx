@@ -18,8 +18,10 @@ export async function loader({ request, params }: LoaderArgs) {
   const { rsvpId } = params
   const ticket = await getObtainRsvpTicket(String(rsvpId))
 
+  console.log({ ticket })
+
   if (ticket.rsvp.status != "TICKET") {
-    throw new Error("Not found")
+    throw redirect("/rsvp/success")
   }
 
   const products = await listProducts()
@@ -41,8 +43,6 @@ export default function () {
   const fetcherSeat = useFetcher()
   const submitRsvp = useSubmitStringify()
   const { personalData, step, setStep, submit } = useRsvp()
-
-  // const { capacity } = personalData
 
   const doFetchSeat = useCallback((date: string) => {
     fetcherSeat.load(`/rsvp/seat?date=` + date)
@@ -67,7 +67,6 @@ export default function () {
       ...submit(),
       rsvpId,
     }
-    console.log(payload)
 
     submitRsvp(payload, { method: "post" })
   }

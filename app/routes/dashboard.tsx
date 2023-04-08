@@ -1,22 +1,23 @@
-import type { LoaderArgs } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
-import { Outlet } from "@remix-run/react";
-import { Sidebar } from "~/components/sidebar";
-import { Header } from "~/components/ui/header";
-import { getAuthorization } from "~/utils/authorization";
+import type { LoaderArgs } from "@remix-run/node"
+import { redirect } from "@remix-run/node"
+import { Outlet } from "@remix-run/react"
+import { Sidebar, SidebarProvider } from "~/components/sidebar"
+import { Header } from "~/components/ui/header"
+import { getAuthorization } from "~/utils/authorization"
 
 export async function loader({ request }: LoaderArgs) {
-  const auth = await getAuthorization(request);
+  const auth = await getAuthorization(request)
 
   if (!auth) {
-    throw redirect("/auth/signin");
+    throw redirect("/auth/signin")
   }
-  return null;
+
+  return null
 }
 
 export default function () {
   return (
-    <>
+    <SidebarProvider>
       <Header />
       <div className="w-full px-4 mx-auto max-w-8xl">
         <div className="lg:flex">
@@ -30,6 +31,6 @@ export default function () {
           </main>
         </div>
       </div>
-    </>
-  );
+    </SidebarProvider>
+  )
 }

@@ -44,6 +44,7 @@ export function UserHeader() {
     window.addEventListener("scroll", scrollFunction)
     return () => window.removeEventListener("scroll", scrollFunction)
   }, [])
+
   return (
     <header
       className={`sticky top-0 z-40 flex-none w-full mx-auto text-white py-4 transition-all duration-200 supports-backdrop-blur:backdrop-blur ${

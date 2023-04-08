@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@remix-run/react"
-import React from "react"
+import React, { createContext, useContext, useState } from "react"
 import { MdDashboard, MdOutlinePeople, MdLogout, MdProductionQuantityLimits, MdRsvp } from "react-icons/md"
 import clsxm from "~/utils"
 
@@ -32,11 +32,40 @@ const CONFIG: SidebarButonProps[] = [
   },
 ]
 
+type SidebarContextProps = {
+  isOpen: boolean
+  setIsOpen: (isOpen: boolean) => void
+}
+
+export const SidebarContext = createContext<null | SidebarContextProps>(null)
+
+export function useSidebar() {
+  const ctx = useContext(SidebarContext)
+  if (!ctx) {
+    throw new Error("useSidebar must inside SidebarContext.Provider")
+  }
+  return ctx
+}
+
+export function SidebarProvider(props: { children: React.ReactNode }) {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+
+  return (
+    <SidebarContext.Provider
+      value={{
+        isOpen,
+        setIsOpen,
+      }}
+      {...props}
+    />
+  )
+}
+
 export function Sidebar() {
   return (
     <aside
       aria-label="Default sidebar example"
-      className="fixed inset-0 z-20 flex-none hidden h-full w-72 lg:static lg:h-auto lg:overflow-y-visible lg:pt-0 lg:w-48 lg:block border-r border-gray-300"
+      className="fixed hidden inset-0 top-0 z-20 flex-none min-h-screen bg-red-200 w-72 lg:static lg:h-auto lg:overflow-y-visible lg:w-48 lg:block border-r border-gray-300"
     >
       <div className="pt-4 flex flex-col gap-4 pr-6">
         {CONFIG.map((x) => {
