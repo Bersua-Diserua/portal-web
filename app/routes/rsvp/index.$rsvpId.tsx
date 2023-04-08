@@ -31,7 +31,7 @@ export async function action({ request, params }: ActionArgs) {
   const payload = await parseStringify<TObjUnknown>(request)
 
   await postSubmitRsvp(String(rsvpId), payload)
-  return redirect("/")
+  return redirect("/rsvp/success")
 }
 
 export default function () {
@@ -53,7 +53,7 @@ export default function () {
     if (fetcherSeat.data) {
       console.log(fetcherSeat.data)
       setSeats(fetcherSeat.data?.seats)
-      setSelectedSeat(null)
+      // setSelectedSeat(null)
     }
   }, [fetcherSeat.data, setSelectedSeat])
 
@@ -63,7 +63,13 @@ export default function () {
   }, [doFetchSeat, personalData.date])
 
   const handleSubmitRsvp = () => {
-    submitRsvp({ ...submit(), rsvpId }, { method: "post" })
+    const payload = {
+      ...submit(),
+      rsvpId,
+    }
+    console.log(payload)
+
+    submitRsvp(payload, { method: "post" })
   }
 
   return (

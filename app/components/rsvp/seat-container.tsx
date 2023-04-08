@@ -90,6 +90,7 @@ export function Seat(props: SeatProps & JSX.IntrinsicElements["button"]) {
 
     setSelectedSeat(index)
   }
+
   return (
     <button
       {...rest}

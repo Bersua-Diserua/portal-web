@@ -104,6 +104,8 @@ const useRsvp = create<RsvpState>((set, get) => ({
   },
   selectedSeat: null,
   setSelectedSeat(seat) {
+    console.log({ seat })
+
     set({
       selectedSeat: seat,
     })
