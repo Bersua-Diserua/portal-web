@@ -23,7 +23,7 @@ export async function loader({ request, params }: LoaderArgs) {
   console.log({ ticket })
 
   if (ticket.rsvp.status != "TICKET") {
-    throw redirect("/invoice/1")
+    throw redirect("/invoice/" + ticket.rsvp.id)
   }
 
   const products = await listProducts()
@@ -56,7 +56,6 @@ export default function () {
     if (fetcherSeat.data) {
       console.log(fetcherSeat.data)
       setSeats(fetcherSeat.data?.seats)
-      // setSelectedSeat(null)
     }
   }, [fetcherSeat.data, setSelectedSeat])
 
