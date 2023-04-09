@@ -1,25 +1,24 @@
 import { Invoice, type InvoiceProps } from "~/components/rsvp/invoice"
 import { UserHeader } from "~/components/ui/header/user-header"
 
-const mockConfirmation: InvoiceProps = {
-  typeInvoice: "INVOICE",
-  invoiceNumber: "9999",
-  name: "Rei Mock",
-  date: new Date().toISOString(),
-  phone: "628xxxx",
-  products: [
-    {
-      name: "Mock 1",
-      desc: "Desc mock 1",
-      count: "2",
-      price: "1000",
-      total: "2000",
-    },
-  ],
-  total: "3000",
-}
-
 export default function () {
+  const mockConfirmation: InvoiceProps = {
+    typeInvoice: "INVOICE",
+    invoiceNumber: "9999",
+    name: "Rei Mock",
+    date: new Date().toISOString(),
+    phone: "628xxxx",
+    products: [
+      {
+        name: "Mock 1",
+        desc: "Desc mock 1",
+        count: "2",
+        price: "1000",
+        total: "2000",
+      },
+    ],
+    total: "3000",
+  }
   return (
     <>
       <UserHeader />

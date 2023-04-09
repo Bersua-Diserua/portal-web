@@ -1,4 +1,7 @@
+import "moment/locale/id"
+
 import moment from "moment"
+
 type ProductProps = {
   name: string
   desc: string
@@ -41,7 +44,7 @@ export function Invoice(props: { data: InvoiceProps }) {
             <p>Atas Nama</p>
             <p className="text-black font-bold">: {data.name}</p>
             <p>Tanggal Reservasi</p>
-            <p className="text-black font-bold">: {moment(data.date).format("ddd, DD MMMM YYYY")}</p>
+            <p className="text-black font-bold">: {moment(data.date).locale("id").format("dddd, DD MMMM YYYY")}</p>
             <p>Nomor Whatsapp</p>
             <p className="text-black font-bold">: {data.phone}</p>
           </div>
