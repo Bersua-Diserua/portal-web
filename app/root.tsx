@@ -5,6 +5,7 @@ import primecore from "primereact/resources/primereact.min.css" //core css
 import primeicons from "primeicons/primeicons.css" //icons
 import primetheme from "primereact/resources/themes/lara-light-indigo/theme.css" //theme
 import tailwindCss from "./styles/tailwind.css"
+import { ToastProvider } from "./components/ui/toast"
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -36,10 +37,12 @@ export default function App() {
         <Links />
       </head>
       <body className="bg-gray-100 dark:bg-dark-1 text-black dark:text-white">
-        <Outlet />
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
+        <ToastProvider>
+          <Outlet />
+          <ScrollRestoration />
+          <Scripts />
+          <LiveReload />
+        </ToastProvider>
       </body>
     </html>
   )
