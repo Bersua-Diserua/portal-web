@@ -1,24 +1,31 @@
-import { useSubmit, type SubmitFunction } from "@remix-run/react";
+import { useSubmit, type SubmitFunction, useFetcher } from "@remix-run/react"
 
 export function useSubmitStringify() {
-  const submit = useSubmit();
+  const submit = useSubmit()
 
-  return function (
-    data: unknown,
-    options: Parameters<SubmitFunction>["1"] = {}
-  ) {
-    return submit({ stringify: JSON.stringify(data) }, options);
-  };
+  return function (data: unknown, options: Parameters<SubmitFunction>["1"] = {}) {
+    return submit({ stringify: JSON.stringify(data) }, options)
+  }
 }
 
-export async function parseStringify<TResult extends unknown = unknown>(
-  request: Request
-): Promise<TResult> {
-  const formData = await request.formData();
-  const stringify = formData.get("stringify");
+export function useFetcherStringify() {
+  const fetcher = useFetcher()
 
-  if (!stringify || typeof stringify !== "string")
-    throw new Error(`typeof stringify is ${typeof stringify}`);
+  const submit = (data: unknown, options: Parameters<SubmitFunction>["1"] = {}) => {
+    return fetcher.submit({ stringify: JSON.stringify(data) }, options)
+  }
 
-  return JSON.parse(stringify) as TResult;
+  return {
+    ...fetcher,
+    submit,
+  }
+}
+
+export async function parseStringify<TResult extends unknown = unknown>(request: Request): Promise<TResult> {
+  const formData = await request.formData()
+  const stringify = formData.get("stringify")
+
+  if (!stringify || typeof stringify !== "string") throw new Error(`typeof stringify is ${typeof stringify}`)
+
+  return JSON.parse(stringify) as TResult
 }
