@@ -57,6 +57,8 @@ export function Seat(props: SeatProps & JSX.IntrinsicElements["button"]) {
     selectedSeat,
     personalData: { capacity: selectedCapacity },
     setSelectedSeat,
+    error,
+    setError,
   } = useRsvp()
 
   const { max, min } = selectedCapacity
@@ -80,7 +82,7 @@ export function Seat(props: SeatProps & JSX.IntrinsicElements["button"]) {
 
   const handleOnClick = () => {
     if (status === "RESERVED" || status === "LOCKED") {
-      return alert(reason)
+      return setError(reason)
     }
 
     if (selectedSeat === index) {
@@ -92,20 +94,22 @@ export function Seat(props: SeatProps & JSX.IntrinsicElements["button"]) {
   }
 
   return (
-    <button
-      {...rest}
-      className={clsxm("absolute border rounded-md w-8 h-8 text-white font-bold", mapStatus[status])}
-      style={{
-        ...position,
-        ...mapSize[size],
-      }}
-      onClick={handleOnClick}
-    >
-      {/* {JSON.stringify(selectedCapacity)}
-      {JSON.stringify(capacity)} */}
-      <p>{index}</p>
-      {/* <p>{status}</p> */}
-    </button>
+    <>
+      <button
+        {...rest}
+        className={clsxm("absolute border rounded-md w-8 h-8 text-white font-bold", mapStatus[status])}
+        style={{
+          ...position,
+          ...mapSize[size],
+        }}
+        onClick={handleOnClick}
+      >
+        {/* {JSON.stringify(selectedCapacity)}
+        {JSON.stringify(capacity)} */}
+        <p>{index}</p>
+        {/* <p>{status}</p> */}
+      </button>
+    </>
   )
 }
 

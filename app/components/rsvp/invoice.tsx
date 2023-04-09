@@ -1,12 +1,35 @@
-export function Invoice() {
+import moment from "moment"
+type ProductProps = {
+  name: string
+  desc: string
+  count: string
+  price: string
+  total: string
+}
+
+export type InvoiceProps = {
+  typeInvoice: "CONFIRMATION" | "INVOICE"
+  invoiceNumber?: string
+  name: string
+  date: string
+  phone: string
+  products: ProductProps[]
+  total: string
+}
+
+export function Invoice(props: { data: InvoiceProps }) {
+  const { data } = props
+
   return (
-    <div className="flex flex-col w-full p-5 rounded-xl shadow-2xl gap-y-8">
+    <div className="flex flex-col w-full p-5 rounded-xl shadow-2xl gap-y-8 bg-white">
       <div className="flex flex-row justify-between items-center">
         <img className="h-full w-44 object-cover" src="https://ik.imagekit.io/bersuadiserua22/icons/serua-transparent.png" alt="logo" />
-        <div className="flex flex-col gap-y-2">
-          <p>Invoice</p>
-          <p>Inv/123</p>
-        </div>
+        {data.typeInvoice === "INVOICE" && (
+          <div className="flex flex-col gap-y-2">
+            <p>Invoice</p>
+            <p>SERUA/{data.invoiceNumber}</p>
+          </div>
+        )}
       </div>
       <div className="flex flex-col gap-y-4 md:gap-y-0 md:flex-row justify-between">
         <p>
@@ -16,11 +39,11 @@ export function Invoice() {
           <p className="font-bold text-black">Untuk</p>
           <div className="grid grid-cols-2">
             <p>Atas Nama</p>
-            <p className="text-black font-bold">: X</p>
+            <p className="text-black font-bold">: {data.name}</p>
             <p>Tanggal Reservasi</p>
-            <p className="text-black font-bold">: Kamis, 23 Desember 2025</p>
+            <p className="text-black font-bold">: {moment(data.date).format("ddd, DD MMMM YYYY")}</p>
             <p>Nomor Whatsapp</p>
-            <p className="text-black font-bold">: 62895385250674</p>
+            <p className="text-black font-bold">: {data.phone}</p>
           </div>
         </div>
       </div>
@@ -40,17 +63,17 @@ export function Invoice() {
             </tr>
           </thead>
           <tbody>
-            {[1, 2, 3].map((i) => (
-              <tr key={i} className="border-b border-gray-400">
+            {data.products.map((val, index) => (
+              <tr key={index} className="border-b border-gray-400">
                 <td className="py-4 text-left">
                   <div className="flex flex-col gap-y-1">
-                    <p className="text-xl font-bold">The Sliding</p>
-                    <p className="text-xs">The Sliding Mr. Bones (Next Stop, Pottersville)</p>
+                    <p className="text-xl font-bold">{val.name}</p>
+                    <p className="text-xs">{val.desc}</p>
                   </div>
                 </td>
-                <td className="py-4 text-right">{i}</td>
-                <td className="py-4 text-right">1961</td>
-                <td className="py-4 text-right">1961</td>
+                <td className="py-4 text-right">{val.count}</td>
+                <td className="py-4 text-right">{val.price}</td>
+                <td className="py-4 text-right">{val.total}</td>
               </tr>
             ))}
           </tbody>
@@ -58,8 +81,8 @@ export function Invoice() {
         <div className="flex flex-col items-end border-b border-gray-400 pb-4">
           <div className="flex flex-col w-1/2">
             <div className="flex flex-row justify-between font-bold text-black">
-              <p className="uppercase">Total Harga (8 barang)</p>
-              <p>Rp567.000</p>
+              <p className="uppercase">Total Harga ({data.products.length} barang)</p>
+              <p>{data.total}</p>
             </div>
           </div>
         </div>
@@ -69,7 +92,7 @@ export function Invoice() {
         <p>
           Silakan hubungi{" "}
           <a href="https://google.com" className="text-serua font-bold">
-            Yang Mulia Serua
+            SEVA (Serua Virtual Assistant)
           </a>{" "}
           apabila kamu membutuhkan bantuan.
         </p>

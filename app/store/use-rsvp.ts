@@ -87,25 +87,26 @@ interface RsvpState {
   setPersonalData: (data: PersonalDataSchema) => void
   setPartial: <TKey extends keyof PersonalDataSchema, TVal extends PersonalDataSchema[TKey]>(key: TKey, val: TVal) => void
   submit: () => RsvpSubmission
-  error: boolean
+  error: string | null
+  setError: (error: string) => void
 }
 
 const useRsvp = create<RsvpState>((set, get) => ({
   ref: null,
   step: "FORM",
-  error: false,
+  error: null,
   setStep(nextStep) {
     const { step: before, selectedSeat, error } = get()
-    if (before === "FORM" && nextStep === "ORDER") {
+    if (before === "FORM" && (nextStep === "ORDER" || nextStep === "CONFIRMATION")) {
       if (!selectedSeat) {
-        set({ error: true })
+        set({ error: "Tolong pilih seat" })
         nextStep = "FORM"
-      } else {
-        set({ error: false })
-        nextStep = "ORDER"
       }
     }
     set({ step: nextStep })
+  },
+  setError(error) {
+    set({ error })
   },
   selectedSeat: null,
   setSelectedSeat(seat) {

@@ -32,7 +32,7 @@ export function UserHeader() {
   return (
     <header
       className={`sticky top-0 z-40 flex-none w-full mx-auto text-white py-4 transition-all duration-200 supports-backdrop-blur:backdrop-blur rounded-b-2xl ${
-        scrolled ? "supports-backdrop-blur:bg-serua/80 py-0" : "supports-backdrop-blur:bg-serua py-5"
+        scrolled ? "supports-backdrop-blur:bg-[#0f172a]/90 py-0" : "supports-backdrop-blur:bg-[#0f172a] py-5"
       }`}
     >
       <div className="flex flex-row items-center justify-between w-full px-8 py-3 mx-auto max-w-8xl gap-y-2">

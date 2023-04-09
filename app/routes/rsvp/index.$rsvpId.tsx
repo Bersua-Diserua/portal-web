@@ -13,7 +13,7 @@ import { Button } from "primereact/button"
 import { parseStringify, useSubmitStringify } from "~/utils/use-submit–stringify"
 import { postSubmitRsvp } from "~/services/rsvp/submission"
 import { getObtainRsvpTicket } from "~/services/rsvp/obtain-ticket-rsvp"
-import { Invoice } from "~/components/rsvp/invoice"
+import { Invoice, type InvoiceProps } from "~/components/rsvp/invoice"
 import { Dialog } from "primereact/dialog"
 
 export async function loader({ request, params }: LoaderArgs) {
@@ -44,9 +44,8 @@ export default function () {
   const { setSelectedSeat } = useRsvp()
   const fetcherSeat = useFetcher()
   const submitRsvp = useSubmitStringify()
-  const { personalData, step, setStep, submit, error } = useRsvp()
+  const { personalData, step, setStep, submit, error, setError } = useRsvp()
   const [scrolled, setScrolled] = useState(false)
-  const [visibleDialog, setVisibleDialog] = useState(false)
 
   const doFetchSeat = useCallback((date: string) => {
     fetcherSeat.load(`/rsvp/seat?date=` + date)
@@ -71,7 +70,15 @@ export default function () {
       ...submit(),
       rsvpId,
     }
-    // submitRsvp(payload, { method: "post" })
+
+    if (step === "FORM") {
+      setStep("ORDER")
+    } else if (step === "ORDER") {
+      setStep("CONFIRMATION")
+    } else {
+      // submitRsvp(payload, { method: "post" })
+      window.location.href = "/invoice/1"
+    }
   }
 
   useEffect(() => {
@@ -90,9 +97,22 @@ export default function () {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
-  useEffect(() => {
-    if (error) setVisibleDialog(true)
-  }, [error])
+  const mockConfirmation: InvoiceProps = {
+    typeInvoice: "CONFIRMATION",
+    name: "Rei Mock",
+    date: new Date().toISOString(),
+    phone: "628xxxx",
+    products: [
+      {
+        name: "Mock 1",
+        desc: "Desc mock 1",
+        count: "2",
+        price: "1000",
+        total: "2000",
+      },
+    ],
+    total: "3000",
+  }
 
   return (
     <div className="flex flex-col gap-y-5 pb-8">
@@ -177,16 +197,18 @@ export default function () {
         </>
       )}
       {step === "ORDER" && <OrderContent products={products} />}
-      {step === "CONFIRMATION" && <Invoice />}
+      {step === "CONFIRMATION" && <Invoice data={mockConfirmation} />}
       <div className="flex flex-row justify-between items-center gap-x-5">
-        <Button severity="secondary" onClick={handleSubmitRsvp}>
-          Previous
-        </Button>
+        {step !== "FORM" && (
+          <Button severity="secondary" onClick={() => (step === "ORDER" ? setStep("FORM") : setStep("ORDER"))}>
+            Previous
+          </Button>
+        )}
         <Button
-          onClick={() => setStep("ORDER")}
-          style={{ backgroundColor: "#9c7a54", border: "#9c7a54" }}
-          onMouseOver={(event) => (event.currentTarget.style.backgroundColor = "#4e3c29")}
-          onMouseLeave={(event) => (event.currentTarget.style.backgroundColor = "#9c7a54")}
+          onClick={handleSubmitRsvp}
+          style={{ backgroundColor: "#0f172a", border: "#0f172a" }}
+          onMouseOver={(event) => (event.currentTarget.style.backgroundColor = "#070b15")}
+          onMouseLeave={(event) => (event.currentTarget.style.backgroundColor = "#0f172a")}
         >
           Next
         </Button>
@@ -207,8 +229,8 @@ export default function () {
           </div>
         </div>
       )}
-      <Dialog header="Header" visible={visibleDialog} style={{ width: "50vw" }} onHide={() => setVisibleDialog(false)}>
-        <p className="m-0">Tolong dipilih seat</p>
+      <Dialog header="Header" visible={!!error} style={{ width: "50vw" }} onHide={() => setError("")}>
+        <p className="m-0">{error}</p>
       </Dialog>
     </div>
   )
