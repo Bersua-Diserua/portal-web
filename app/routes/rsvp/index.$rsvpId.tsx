@@ -23,7 +23,7 @@ export async function loader({ request, params }: LoaderArgs) {
   console.log({ ticket })
 
   if (ticket.rsvp.status != "TICKET") {
-    throw redirect("/rsvp/success")
+    throw redirect("/invoice/1")
   }
 
   const products = await listProducts()
@@ -35,7 +35,7 @@ export async function action({ request, params }: ActionArgs) {
   const payload = await parseStringify<TObjUnknown>(request)
 
   await postSubmitRsvp(String(rsvpId), payload)
-  return redirect("/rsvp/success")
+  return redirect("/invoice/1")
 }
 
 export default function () {
@@ -76,8 +76,7 @@ export default function () {
     } else if (step === "ORDER") {
       setStep("CONFIRMATION")
     } else {
-      // submitRsvp(payload, { method: "post" })
-      window.location.href = "/invoice/1"
+      submitRsvp(payload, { method: "post" })
     }
   }
 
