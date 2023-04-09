@@ -27,6 +27,12 @@ export const links: LinksFunction = () => [
     rel: "stylesheet",
     href: primeicons,
   },
+  { rel: "preconnect", href: "https://fonts.googleapis.com" },
+  { rel: "preconnect", href: "https://fonts.gstatic.com" },
+  {
+    rel: "stylesheet",
+    href: "https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@200;300;400;500;600;700;800&display=swap",
+  },
 ]
 
 export default function App() {

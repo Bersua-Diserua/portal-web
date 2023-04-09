@@ -4,7 +4,7 @@ import { json, type LoaderArgs } from "@remix-run/node"
 import { RsvpForm } from "~/components/rsvp/form"
 import { useFetcher, useLoaderData } from "@remix-run/react"
 import { useCallback, useEffect, useState } from "react"
-import { Seat, SeatContainer } from "~/components/rsvp/seat-container"
+import { mapStatus, Seat, SeatContainer } from "~/components/rsvp/seat-container"
 import { type SeatProps } from "~/services/rsvp/seat-management"
 import { useRsvp } from "~/store/use-rsvp"
 import { OrderContent } from "~/components/order-content"
@@ -13,6 +13,8 @@ import { Button } from "primereact/button"
 import { parseStringify, useSubmitStringify } from "~/utils/use-submit–stringify"
 import { postSubmitRsvp } from "~/services/rsvp/submission"
 import { getObtainRsvpTicket } from "~/services/rsvp/obtain-ticket-rsvp"
+import { Invoice } from "~/components/rsvp/invoice"
+import { Dialog } from "primereact/dialog"
 
 export async function loader({ request, params }: LoaderArgs) {
   const { rsvpId } = params
@@ -42,7 +44,9 @@ export default function () {
   const { setSelectedSeat } = useRsvp()
   const fetcherSeat = useFetcher()
   const submitRsvp = useSubmitStringify()
-  const { personalData, step, setStep, submit } = useRsvp()
+  const { personalData, step, setStep, submit, error } = useRsvp()
+  const [scrolled, setScrolled] = useState(false)
+  const [visibleDialog, setVisibleDialog] = useState(false)
 
   const doFetchSeat = useCallback((date: string) => {
     fetcherSeat.load(`/rsvp/seat?date=` + date)
@@ -67,9 +71,28 @@ export default function () {
       ...submit(),
       rsvpId,
     }
-
-    submitRsvp(payload, { method: "post" })
+    // submitRsvp(payload, { method: "post" })
   }
+
+  useEffect(() => {
+    const scrollFunction = () => {
+      if (Math.round(window.scrollY) == 0) {
+        setScrolled(false)
+      } else {
+        setScrolled(true)
+      }
+    }
+    window.addEventListener("scroll", scrollFunction)
+    return () => window.removeEventListener("scroll", scrollFunction)
+  }, [])
+
+  const backToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  useEffect(() => {
+    if (error) setVisibleDialog(true)
+  }, [error])
 
   return (
     <div className="flex flex-col gap-y-5 pb-8">
@@ -79,7 +102,7 @@ export default function () {
         </p>
         <p className="text-lg">Silahkan isi formulir untuk melakukan reservasi.</p>
       </div>
-      <ol className="flex justify-around items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4">
+      <ol className="flex justify-around items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 top-0">
         <li className={`flex items-center cursor-pointer ${step === "FORM" && "text-serua"}`} onClick={() => setStep("FORM")}>
           <span
             className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border rounded-full shrink-0 ${
@@ -115,23 +138,78 @@ export default function () {
         </li>
       </ol>
 
-      {step === "FORM" ? (
+      {step === "FORM" && (
         <>
-          <div className="flex flex-col gap-y-5">
+          <div className="flex flex-col gap-y-8">
             <SeatContainer>
               {seats?.map((x) => (
                 <Seat {...x} key={x.index} />
               ))}
             </SeatContainer>
+            <div className="w-full flex flex-row justify-center">
+              <div className="w-max flex flex-col gap-2 items-center bg-[#0f172a] text-white rounded-lg py-5 px-10">
+                <div className="flex flex-row gap-x-8">
+                  <div className="flex flex-row gap-x-2 items-center">
+                    <div className={`h-5 w-5 rounded-full border ${mapStatus.LOCKED}`}></div>
+                    <p>Locked</p>
+                  </div>
+
+                  <div className="flex flex-row gap-x-2 items-center">
+                    <div className={`h-5 w-5 rounded-full border ${mapStatus.RESERVED}`}></div>
+                    <p>Reserved</p>
+                  </div>
+
+                  <div className="flex flex-row gap-x-2 items-center">
+                    <div className={`h-5 w-5 rounded-full border ${mapStatus.SELECTED}`}></div>
+                    <p>Selected</p>
+                  </div>
+                </div>
+                <div className="flex flex-row gap-x-8">
+                  <div className="flex flex-row gap-x-2 items-center">
+                    <div className={`h-5 w-5 rounded-full border ${mapStatus.OPEN}`}></div>
+                    <p>Open</p>
+                  </div>
+                </div>
+              </div>
+            </div>
             <RsvpForm />
           </div>
         </>
-      ) : (
-        <OrderContent products={products} />
       )}
-      <div className="flex flex-row items-center bottom-0 sticky gap-x-5">
-        <Button onClick={handleSubmitRsvp}>Submit</Button>
+      {step === "ORDER" && <OrderContent products={products} />}
+      {step === "CONFIRMATION" && <Invoice />}
+      <div className="flex flex-row justify-between items-center gap-x-5">
+        <Button severity="secondary" onClick={handleSubmitRsvp}>
+          Previous
+        </Button>
+        <Button
+          onClick={() => setStep("ORDER")}
+          style={{ backgroundColor: "#9c7a54", border: "#9c7a54" }}
+          onMouseOver={(event) => (event.currentTarget.style.backgroundColor = "#4e3c29")}
+          onMouseLeave={(event) => (event.currentTarget.style.backgroundColor = "#9c7a54")}
+        >
+          Next
+        </Button>
       </div>
+      {scrolled && (
+        <div className="flex sticky bottom-4 justify-end">
+          <div className="rounded-full supports-backdrop-blur:bg-serua/80 p-3 text-white cursor-pointer" onClick={backToTop}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75L12 3m0 0l3.75 3.75M12 3v18" />
+            </svg>
+          </div>
+        </div>
+      )}
+      <Dialog header="Header" visible={visibleDialog} style={{ width: "50vw" }} onHide={() => setVisibleDialog(false)}>
+        <p className="m-0">Tolong dipilih seat</p>
+      </Dialog>
     </div>
   )
 }

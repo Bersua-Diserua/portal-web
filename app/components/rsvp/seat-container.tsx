@@ -6,7 +6,7 @@ type SeatContainerProps = {} & JSX.IntrinsicElements["div"]
 export function SeatContainer(props: SeatContainerProps) {
   const { className, children, ...rest } = props
   return (
-    <div {...rest} className={"border border-white w-full aspect-square rounded-md relative bg-gray-900"}>
+    <div {...rest} className={"border border-white w-full aspect-square rounded-lg relative bg-[#0f172a]"}>
       {children}
     </div>
   )
@@ -44,11 +44,11 @@ const mapSize: Record<NonNullable<SeatProps["size"]>, { width: number | undefine
   },
 }
 
-const mapStatus: Record<typeof status, string> = {
+export const mapStatus: Record<typeof status, string> = {
   OPEN: "bg-green-400",
-  RESERVED: "bg-red-300",
-  SELECTED: "bg-green-800",
-  LOCKED: "bg-red-600",
+  RESERVED: "bg-serua",
+  SELECTED: "bg-[#ecbb58]",
+  LOCKED: "bg-[#c8232b]",
 }
 
 export function Seat(props: SeatProps & JSX.IntrinsicElements["button"]) {
@@ -94,7 +94,7 @@ export function Seat(props: SeatProps & JSX.IntrinsicElements["button"]) {
   return (
     <button
       {...rest}
-      className={clsxm("absolute border rounded-md w-8 h-8", mapStatus[status])}
+      className={clsxm("absolute border rounded-md w-8 h-8 text-white font-bold", mapStatus[status])}
       style={{
         ...position,
         ...mapSize[size],
@@ -104,7 +104,7 @@ export function Seat(props: SeatProps & JSX.IntrinsicElements["button"]) {
       {/* {JSON.stringify(selectedCapacity)}
       {JSON.stringify(capacity)} */}
       <p>{index}</p>
-      <p>{status}</p>
+      {/* <p>{status}</p> */}
     </button>
   )
 }
