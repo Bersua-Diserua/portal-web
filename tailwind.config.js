@@ -1,7 +1,12 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require("tailwindcss/defaultTheme")
+
 module.exports = {
   content: ["./app/**/*.{ts,tsx,jsx,js}", "./node_modules/flowbite-react/**/*.js"],
   theme: {
+    fontFamily: {
+      sans: ["Montserrat Alternates", ...defaultTheme.fontFamily.sans],
+    },
     extend: {
       container: {
         center: true,

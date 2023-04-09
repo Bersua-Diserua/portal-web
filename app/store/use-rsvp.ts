@@ -1,7 +1,7 @@
-import { z } from "zod"
-import { create } from "zustand"
 import type { ProductsSubmission } from "./use-order"
+import { create } from "zustand"
 import { useOrder } from "./use-order"
+import { z } from "zod"
 
 export const personalDataSchema = z.object({
   name: z.string(),
@@ -61,20 +61,20 @@ export const persons = [
       max: 12,
     },
   },
-  {
-    name: "12-20",
-    value: {
-      min: 12,
-      max: 20,
-    },
-  },
-  {
-    name: "20 lebih",
-    value: {
-      min: 20,
-      max: 99,
-    },
-  },
+  // {
+  //   name: "12-20",
+  //   value: {
+  //     min: 12,
+  //     max: 20,
+  //   },
+  // },
+  // {
+  //   name: "20 lebih",
+  //   value: {
+  //     min: 20,
+  //     max: 99,
+  //   },
+  // },
 ]
 
 interface RsvpState {
@@ -87,25 +87,28 @@ interface RsvpState {
   setPersonalData: (data: PersonalDataSchema) => void
   setPartial: <TKey extends keyof PersonalDataSchema, TVal extends PersonalDataSchema[TKey]>(key: TKey, val: TVal) => void
   submit: () => RsvpSubmission
+  error: boolean
 }
 
 const useRsvp = create<RsvpState>((set, get) => ({
   ref: null,
   step: "FORM",
+  error: false,
   setStep(nextStep) {
-    const { step: before, selectedSeat } = get()
+    const { step: before, selectedSeat, error } = get()
     if (before === "FORM" && nextStep === "ORDER") {
       if (!selectedSeat) {
-        alert("Tolong isi data diri terlebih dahulu")
+        set({ error: true })
         nextStep = "FORM"
+      } else {
+        set({ error: false })
+        nextStep = "ORDER"
       }
     }
     set({ step: nextStep })
   },
   selectedSeat: null,
   setSelectedSeat(seat) {
-    console.log({ seat })
-
     set({
       selectedSeat: seat,
     })

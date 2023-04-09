@@ -8,9 +8,11 @@ export function Invoice() {
           <p>Inv/123</p>
         </div>
       </div>
-      <div className="flex flex-row justify-between">
-        <p>Diterbitkan oleh Sèrua</p>
-        <div className="flex flex-col gap-y-4">
+      <div className="flex flex-col gap-y-4 md:gap-y-0 md:flex-row justify-between">
+        <p>
+          Diterbitkan oleh <span className="text-serua">Sèrua</span>
+        </p>
+        <div className="flex flex-col gap-y-2">
           <p className="font-bold text-black">Untuk</p>
           <div className="grid grid-cols-2">
             <p>Atas Nama</p>
