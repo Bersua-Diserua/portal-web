@@ -40,7 +40,8 @@ export function RsvpForm(props: FormPropsType) {
     defaultValues: personalData,
   })
 
-  setValue("phoneNumber", parsePhoneNumber(phoneNumber))
+  // setValue("phoneNumber", parsePhoneNumber(phoneNumber))
+  console.log({ phoneNumber })
 
   const dateNow = moment().toDate()
   const utilsDate = {
