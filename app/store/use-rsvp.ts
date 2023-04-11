@@ -99,7 +99,7 @@ const useRsvp = create<RsvpState>((set, get) => ({
     const { step: before, selectedSeat, error } = get()
     if (before === "FORM" && (nextStep === "ORDER" || nextStep === "CONFIRMATION")) {
       if (!selectedSeat) {
-        set({ error: "Tolong pilih seat" })
+        set({ error: "Tolong pilih tempat duduk kamu dulu ya! :)" })
         nextStep = "FORM"
       }
     }

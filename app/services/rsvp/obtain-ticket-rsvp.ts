@@ -3,6 +3,7 @@ import { api } from "../core"
 type RsvpTicket = {
   id: string
   status: "TICKET"
+  phoneNumber: string
 }
 
 export async function getObtainRsvpTicket(ticketId: string) {

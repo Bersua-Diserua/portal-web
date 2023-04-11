@@ -4,6 +4,7 @@ import { Calendar } from "primereact/calendar"
 import { Dropdown } from "primereact/dropdown"
 import type { PersonalDataSchema } from "~/store/use-rsvp"
 import moment from "moment"
+import { parsePhoneNumber } from "../../utils/phone-number"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -27,12 +28,19 @@ export const hours = [
   },
 ]
 
-export function RsvpForm() {
+type FormPropsType = {
+  phoneNumber: string
+}
+
+export function RsvpForm(props: FormPropsType) {
+  const { phoneNumber } = props
   const { personalData, setPartial, setPersonalData, setSelectedSeat } = useRsvp()
   const { watch, setValue, register, getValues } = useForm<PersonalDataSchema>({
     resolver: zodResolver(personalDataSchema),
     defaultValues: personalData,
   })
+
+  setValue("phoneNumber", parsePhoneNumber(phoneNumber))
 
   const dateNow = moment().toDate()
   const utilsDate = {

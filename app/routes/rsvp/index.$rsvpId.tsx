@@ -27,7 +27,8 @@ export async function loader({ request, params }: LoaderArgs) {
   }
 
   const products = await listProducts()
-  return json({ products, rsvpId: String(rsvpId) })
+  const { phoneNumber } = ticket.rsvp
+  return json({ products, rsvpId: String(rsvpId), phoneNumber })
 }
 
 export async function action({ request, params }: ActionArgs) {
@@ -39,7 +40,7 @@ export async function action({ request, params }: ActionArgs) {
 }
 
 export default function () {
-  const { products, rsvpId } = useLoaderData<typeof loader>()
+  const { products, rsvpId, phoneNumber } = useLoaderData<typeof loader>()
   const [seats, setSeats] = useState<SeatProps[] | null>(null)
   const { setSelectedSeat } = useRsvp()
   const fetcherSeat = useFetcher()
@@ -191,7 +192,7 @@ export default function () {
                 </div>
               </div>
             </div>
-            <RsvpForm />
+            <RsvpForm phoneNumber={phoneNumber} />
           </div>
         </>
       )}
@@ -228,7 +229,7 @@ export default function () {
           </div>
         </div>
       )}
-      <Dialog header="Header" visible={!!error} style={{ width: "50vw" }} onHide={() => setError("")}>
+      <Dialog header="UPSSS!!! ADA YANG SALAH NIHH!!" visible={!!error} style={{ width: "50vw" }} onHide={() => setError("")}>
         <p className="m-0">{error}</p>
       </Dialog>
     </div>
