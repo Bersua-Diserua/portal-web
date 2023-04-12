@@ -40,13 +40,16 @@ export function RsvpForm(props: FormPropsType) {
     defaultValues: personalData,
   })
 
-  setValue("phoneNumber", parsePhoneNumber(phoneNumber))
-
   const dateNow = moment().toDate()
   const utilsDate = {
     max: moment().add(30, "days").toDate(),
     min: dateNow,
   }
+
+  useEffect(() => {
+    if (phoneNumber) setValue("phoneNumber", parsePhoneNumber(phoneNumber))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     return () => setPersonalData(getValues())
@@ -78,7 +81,7 @@ export function RsvpForm(props: FormPropsType) {
         <input
           {...register("name")}
           type="text"
-          id="email"
+          id="name"
           className="bg-white border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Masukkan nama kamu"
           required

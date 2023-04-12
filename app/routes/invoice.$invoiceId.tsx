@@ -1,13 +1,29 @@
 import { Invoice, type InvoiceProps } from "~/components/rsvp/invoice"
 import { UserHeader } from "~/components/ui/header/user-header"
+import { type LoaderArgs, json, redirect } from "@remix-run/node"
+import { getDetailsInvoice } from "~/services/rsvp/invoice-details"
+import { useLoaderData } from "@remix-run/react"
+
+export async function loader({ request, params }: LoaderArgs) {
+  const { invoiceId } = params
+
+  const invoice = await getDetailsInvoice(String(invoiceId))
+
+  if (invoice.products.length === 0) {
+    throw redirect("/invoice/1")
+  }
+
+  return json({ invoice })
+}
 
 export default function () {
+  const { invoice } = useLoaderData<typeof loader>()
   const mockConfirmation: InvoiceProps = {
     typeInvoice: "INVOICE",
     invoiceNumber: "9999",
-    name: "Rei Mock",
-    date: new Date().toISOString(),
-    phone: "628xxxx",
+    name: invoice.customer.name,
+    date: invoice.date,
+    phone: invoice.customer.phoneNumber,
     products: [
       {
         name: "Mock 1",

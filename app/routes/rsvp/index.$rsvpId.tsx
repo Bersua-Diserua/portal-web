@@ -15,15 +15,14 @@ import { postSubmitRsvp } from "~/services/rsvp/submission"
 import { getObtainRsvpTicket } from "~/services/rsvp/obtain-ticket-rsvp"
 import { Invoice, type InvoiceProps } from "~/components/rsvp/invoice"
 import { Dialog } from "primereact/dialog"
+import clsxm from "~/utils"
 
 export async function loader({ request, params }: LoaderArgs) {
   const { rsvpId } = params
   const ticket = await getObtainRsvpTicket(String(rsvpId))
 
-  console.log({ ticket })
-
   if (ticket.rsvp.status != "TICKET") {
-    throw redirect("/invoice/" + ticket.rsvp.id)
+    throw redirect("/invoice/1")
   }
 
   const products = await listProducts()
@@ -57,6 +56,7 @@ export default function () {
     if (fetcherSeat.data) {
       console.log(fetcherSeat.data)
       setSeats(fetcherSeat.data?.seats)
+      // setSelectedSeat(null)
     }
   }, [fetcherSeat.data, setSelectedSeat])
 
@@ -197,13 +197,19 @@ export default function () {
       )}
       {step === "ORDER" && <OrderContent products={products} />}
       {step === "CONFIRMATION" && <Invoice data={mockConfirmation} />}
-      <div className="flex flex-row justify-between items-center gap-x-5">
+      <div
+        className={clsxm(
+          "flex flex-row items-center gap-x-5 sticky bottom-20 justify-end",
+          step === "FORM" ? "justify-end" : "justify-between"
+        )}
+      >
         {step !== "FORM" && (
-          <Button severity="secondary" onClick={() => (step === "ORDER" ? setStep("FORM") : setStep("ORDER"))}>
+          <Button className="shadow-lg" severity="secondary" onClick={() => (step === "ORDER" ? setStep("FORM") : setStep("ORDER"))}>
             Previous
           </Button>
         )}
         <Button
+          className="shadow-2xl"
           onClick={handleSubmitRsvp}
           style={{ backgroundColor: "#0f172a", border: "#0f172a" }}
           onMouseOver={(event) => (event.currentTarget.style.backgroundColor = "#070b15")}

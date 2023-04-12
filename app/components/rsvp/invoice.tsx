@@ -41,7 +41,7 @@ export function Invoice(props: { data: InvoiceProps }) {
         <div className="flex flex-col gap-y-2">
           <p className="font-bold text-black">Untuk</p>
           <div className="grid grid-cols-2">
-            <p>Atas Nama</p>
+            <p>Nama</p>
             <p className="text-black font-bold">: {data.name}</p>
             <p>Tanggal Reservasi</p>
             <p className="text-black font-bold">: {moment(data.date).locale("id").format("dddd, DD MMMM YYYY")}</p>

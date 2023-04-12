@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react"
+
 import type { SeatConfig } from "~/config/rsvp"
 import clsxm from "~/utils"
 import { mock } from "~/config/rsvp"
@@ -8,7 +9,7 @@ export function RsvpSeat({
 }: {
   seatsBooked: {
     index: number
-    status: "EMPTY" | "APPROVED" | "SUBMISSION"
+    status: "EMPTY" | "APPROVED" | "ON_HOLD" | "SUBMISSION"
   }[]
 }) {
   const [selected, setSelected] = useState<SeatConfig | null>(null)

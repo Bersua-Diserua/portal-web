@@ -1,16 +1,17 @@
 import { useCallback, useEffect, useState } from "react"
-import { useFetcher } from "@remix-run/react"
-import type { CalendarChangeEvent } from "primereact/calendar"
-import { Calendar } from "primereact/calendar"
-import type { Nullable } from "primereact/ts-helpers"
-import { DataTable } from "primereact/datatable"
-import { Column } from "primereact/column"
-import { ClientOnly } from "remix-utils"
-import { useToast } from "~/components/ui/toast"
-import type { PreviewLoader } from "./preview"
+
 import { Button } from "primereact/button"
+import { Calendar } from "primereact/calendar"
+import type { CalendarChangeEvent } from "primereact/calendar"
+import { ClientOnly } from "remix-utils"
+import { Column } from "primereact/column"
+import { DataTable } from "primereact/datatable"
 import { Dialog } from "primereact/dialog"
+import type { Nullable } from "primereact/ts-helpers"
+import type { PreviewLoader } from "./preview"
+import { useFetcher } from "@remix-run/react"
 import { useFetcherStringify } from "~/utils/use-submit–stringify"
+import { useToast } from "~/components/ui/toast"
 
 export default function () {
   const fetcher = useFetcher<PreviewLoader>()
@@ -46,25 +47,59 @@ export default function () {
     return <Button onClick={() => setDialog("asd ")}>Detail</Button>
   }, [])
 
-  const approveAction = (data: NonNullable<typeof fetcher["data"]>["records"][number]) => {
+  const columnAction = (data: NonNullable<typeof fetcher["data"]>["records"][number]) => {
+    let updateStatus = "ON_HOLD"
+
+    if (data.status === "SUBMISSION") {
+      updateStatus = "ON_HOLD"
+    } else if (updateStatus === "ON_HOLD") {
+      updateStatus = "RESOLVE"
+    }
+
     return (
-      <Button
-        onClick={() =>
-          fetcherApproval.submit(
-            {
-              rsvpId: fetcher.data?.rsvp.id,
-              status: "RESOLVE",
-              recordId: data.recordId,
-            },
-            {
-              action: "/api/rsvp/status",
-              method: "post",
+      <div className="flex flex-row gap-x-2">
+        {data.status === "SUBMISSION" ||
+          (data.status === "ON_HOLD" && (
+            <Button
+              severity="danger"
+              onClick={() =>
+                fetcherApproval.submit(
+                  {
+                    rsvpId: fetcher.data?.rsvp.id,
+                    status: "REJECT",
+                    recordId: data.recordId,
+                  },
+                  {
+                    action: "/api/rsvp/status",
+                    method: "post",
+                  }
+                )
+              }
+            >
+              Reject
+            </Button>
+          ))}
+        {data.status !== "RESOLVE" && (
+          <Button
+            severity={data.status === "ON_HOLD" ? "success" : undefined}
+            onClick={() =>
+              fetcherApproval.submit(
+                {
+                  rsvpId: fetcher.data?.rsvp.id,
+                  status: updateStatus,
+                  recordId: data.recordId,
+                },
+                {
+                  action: "/api/rsvp/status",
+                  method: "post",
+                }
+              )
             }
-          )
-        }
-      >
-        Approve
-      </Button>
+          >
+            {data.status === "SUBMISSION" ? "Approve" : "Paid"}
+          </Button>
+        )}
+      </div>
     )
   }
 
@@ -87,7 +122,7 @@ export default function () {
             <Column field="details.capacity" header="Capacity"></Column>
             <Column field="details.phoneNumber" header="Phone Number"></Column>
             {/* <Column header="Action" body={bodyAction}></Column> */}
-            <Column header="Approve" body={approveAction}></Column>
+            <Column header="Approve" body={columnAction}></Column>
           </DataTable>
         )}
       </ClientOnly>
