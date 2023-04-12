@@ -22,7 +22,7 @@ export async function loader({ request, params }: LoaderArgs) {
   const ticket = await getObtainRsvpTicket(String(rsvpId))
 
   if (ticket.rsvp.status != "TICKET") {
-    throw redirect("/invoice/1")
+    throw redirect(`/invoice/${rsvpId}`)
   }
 
   const products = await listProducts()
@@ -35,7 +35,7 @@ export async function action({ request, params }: ActionArgs) {
   const payload = await parseStringify<TObjUnknown>(request)
 
   await postSubmitRsvp(String(rsvpId), payload)
-  return redirect("/invoice/1")
+  return redirect(`/invoice/${rsvpId}`)
 }
 
 export default function () {

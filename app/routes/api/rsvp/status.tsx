@@ -6,10 +6,9 @@ import { parseStringify } from "~/utils/use-submit–stringify"
 
 export async function action({ request }: ActionArgs) {
   const auth = await getRequiredAuth(request)
-  console.log({ auth })
 
   const data = await parseStringify<UpdateStatusRecord>(request)
-  const a = await updateStatusRecord(data, auth)
+  await updateStatusRecord(data, auth)
 
   return null
 }
