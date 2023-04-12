@@ -15,7 +15,16 @@ export async function loader({ params }: LoaderArgs) {
     record: data.record,
   })
 }
+
 export default function () {
   const { record } = useLoaderData<typeof loader>()
-  return <p>{JSON.stringify(record)}</p>
+  return (
+    <div>
+      {/* Data */}
+      <div className="flex">
+        <p>Name</p>
+        <p>{record.name}</p>
+      </div>
+    </div>
+  )
 }

@@ -5,9 +5,9 @@ import moment from "moment"
 type ProductProps = {
   name: string
   desc: string
-  count: string
-  price: string
-  total: string
+  count: number
+  price: number
+  total: number
 }
 
 export type InvoiceProps = {
@@ -17,7 +17,7 @@ export type InvoiceProps = {
   date: string
   phone: string
   products: ProductProps[]
-  total: string
+  total: number
 }
 
 export function Invoice(props: { data: InvoiceProps }) {
