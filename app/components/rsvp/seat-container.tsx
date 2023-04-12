@@ -78,12 +78,12 @@ export function Seat(props: SeatProps & JSX.IntrinsicElements["button"]) {
     }
   }
 
-  if (status == "RESERVED") {
+  if (status == "RESERVED" || status === "ON_HOLD") {
     reason = `Meja ${index} telah dipesan`
   }
 
   const handleOnClick = () => {
-    if (status === "RESERVED" || status === "LOCKED") {
+    if (status === "RESERVED" || status === "LOCKED" || status === "ON_HOLD") {
       return setError(reason)
     }
 
