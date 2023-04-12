@@ -106,10 +106,7 @@ export function Seat(props: SeatProps & JSX.IntrinsicElements["button"]) {
         }}
         onClick={handleOnClick}
       >
-        {/* {JSON.stringify(selectedCapacity)}
-        {JSON.stringify(capacity)} */}
         <p>{index}</p>
-        {/* <p>{status}</p> */}
       </button>
     </>
   )
