@@ -7,6 +7,8 @@ export function SeatContainer(props: SeatContainerProps) {
   const { className, children, ...rest } = props
   return (
     <div {...rest} className={"border border-white w-full aspect-square rounded-lg relative bg-[#0f172a]"}>
+      <div className="bg-red-200 w-[65%] h-[70%] top-[15%] left-[18%] absolute rounded-lg" />
+      <div className="bg-red-500 w-[35%] h-[15%] bottom-[20%] left-[32%] absolute rounded-lg flex items-center justify-center">Bar</div>
       {children}
     </div>
   )
@@ -18,7 +20,7 @@ type SeatProps = {
   position?: SeatPosition
   size?: "large" | "medium" | "small" | "long"
   index: number
-  status: "OPEN" | "RESERVED" | "SELECTED" | "LOCKED"
+  status: "OPEN" | "RESERVED" | "SELECTED" | "LOCKED" | "ON_HOLD"
   capacity: {
     max: number
     min: number
@@ -44,11 +46,12 @@ const mapSize: Record<NonNullable<SeatProps["size"]>, { width: number | undefine
   },
 }
 
-export const mapStatus: Record<typeof status, string> = {
+export const mapStatus: Record<SeatProps["status"], string> = {
   OPEN: "bg-green-400",
   RESERVED: "bg-serua",
   SELECTED: "bg-[#ecbb58]",
   LOCKED: "bg-[#c8232b]",
+  ON_HOLD: "bg-purple-500",
 }
 
 export function Seat(props: SeatProps & JSX.IntrinsicElements["button"]) {
@@ -57,7 +60,6 @@ export function Seat(props: SeatProps & JSX.IntrinsicElements["button"]) {
     selectedSeat,
     personalData: { capacity: selectedCapacity },
     setSelectedSeat,
-    error,
     setError,
   } = useRsvp()
 
@@ -112,293 +114,3 @@ export function Seat(props: SeatProps & JSX.IntrinsicElements["button"]) {
     </>
   )
 }
-
-// const config: SeatProps[] = [
-//   {
-//     position: {
-//       top: "3%",
-//       left: "3%",
-//     },
-//     index: 1,
-//     size: "medium",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "OPEN",
-//   },
-//   {
-//     position: {
-//       top: "3%",
-//       left: "18%",
-//     },
-//     index: 2,
-//     size: "small",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "RESERVED",
-//   },
-//   {
-//     position: {
-//       top: "3%",
-//       left: "33%",
-//     },
-//     index: 3,
-//     size: "small",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "OPEN",
-//   },
-//   {
-//     position: {
-//       top: "3%",
-//       right: "33%",
-//     },
-//     index: 4,
-//     size: "small",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "OPEN",
-//   },
-//   {
-//     position: {
-//       top: "3%",
-//       right: "18%",
-//     },
-//     index: 5,
-//     size: "small",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "OPEN",
-//   },
-//   {
-//     position: {
-//       top: "3%",
-//       right: "3%",
-//     },
-//     index: 6,
-//     size: "medium",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "OPEN",
-//   },
-//   {
-//     position: {
-//       top: "23%",
-//       right: "3%",
-//     },
-//     index: 7,
-//     size: "small",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "OPEN",
-//   },
-//   {
-//     position: {
-//       bottom: "23%",
-//       right: "3%",
-//     },
-//     index: 8,
-//     size: "small",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "OPEN",
-//   },
-//   {
-//     position: {
-//       bottom: "3%",
-//       right: "3%",
-//     },
-//     index: 9,
-//     size: "medium",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "OPEN",
-//   },
-//   {
-//     position: {
-//       bottom: "3%",
-//       left: "3%",
-//     },
-//     index: 10,
-//     size: "medium",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "OPEN",
-//   },
-//   {
-//     position: {
-//       bottom: "23%",
-//       left: "3%",
-//     },
-//     index: 11,
-//     size: "small",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "OPEN",
-//   },
-//   {
-//     position: {
-//       top: "23%",
-//       left: "3%",
-//     },
-//     index: 12,
-//     size: "small",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "OPEN",
-//   },
-//   {
-//     position: {
-//       top: "28%",
-//       left: "22%",
-//     },
-//     index: 13,
-//     size: "large",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "OPEN",
-//   },
-//   {
-//     position: {
-//       top: "28%",
-//       right: "22%",
-//     },
-//     index: 14,
-//     size: "large",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "OPEN",
-//   },
-//   {
-//     position: {
-//       bottom: "-1%",
-//       left: "22%",
-//     },
-//     index: 15,
-//     size: "long",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "OPEN",
-//   },
-//   {
-//     position: {
-//       bottom: "-1%",
-//       right: "22%",
-//     },
-//     index: 16,
-//     size: "long",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "OPEN",
-//   },
-//   {
-//     position: {
-//       bottom: "20%",
-//       right: "21%",
-//     },
-//     index: 17,
-//     size: "small",
-//     capacity: {
-//       max: 6,
-//       min: 3,
-//     },
-//     status: "OPEN",
-//   },
-// ]
-
-// const schema = z.object({
-//   capacity: z.preprocess(Number, z.number()),
-// })
-
-// export function Sample1() {
-//   const { register, watch, control } = useForm<z.infer<typeof schema>>({
-//     resolver: zodResolver(schema),
-//   })
-
-//   const [selectedIndex, setSelectedIndex] = useState<null | number>(null)
-
-//   const handleSeatOnClick = useCallback(
-//     (config: SeatProps) => {
-//       const capacityRequest = watch("capacity")
-
-//       if (capacityRequest > config.capacity.max) {
-//         alert("No more capacity")
-//         return
-//       }
-
-//       if (config.status === "RESERVED") {
-//         return alert(`Already reserved`)
-//       }
-
-//       if (selectedIndex === config.index) {
-//         setSelectedIndex(null)
-//         return
-//       }
-
-//       setSelectedIndex(config.index)
-//     },
-//     [selectedIndex, setSelectedIndex, watch]
-//   )
-
-//   const validate = () => {
-//     setSelectedIndex(null)
-//   }
-
-//   return (
-//     <div>
-//       <form>
-//         <Controller
-//           name="capacity"
-//           control={control}
-//           render={({ field }) => (
-//             <input
-//               type="number"
-//               {...field}
-//               className="text-red-900"
-//               onBlur={() => {
-//                 validate()
-//                 field.onBlur()
-//               }}
-//             />
-//           )}
-//         />
-//       </form>
-//       <SeatContainer>
-//         {config.map((x) => (
-//           <Seat {...x} key={x.index} onClick={() => handleSeatOnClick(x)} status={selectedIndex === x.index ? "SELECTED" : x.status} />
-//         ))}
-//       </SeatContainer>
-//     </div>
-//   )
-// }

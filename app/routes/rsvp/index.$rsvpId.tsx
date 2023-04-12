@@ -56,7 +56,6 @@ export default function () {
     if (fetcherSeat.data) {
       console.log(fetcherSeat.data)
       setSeats(fetcherSeat.data?.seats)
-      // setSelectedSeat(null)
     }
   }, [fetcherSeat.data, setSelectedSeat])
 
