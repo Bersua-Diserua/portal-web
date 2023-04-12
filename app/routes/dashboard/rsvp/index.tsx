@@ -9,7 +9,7 @@ import { DataTable } from "primereact/datatable"
 import { Dialog } from "primereact/dialog"
 import type { Nullable } from "primereact/ts-helpers"
 import type { PreviewLoader } from "./preview"
-import { useFetcher } from "@remix-run/react"
+import { Link, useFetcher } from "@remix-run/react"
 import { useFetcherStringify } from "~/utils/use-submit–stringify"
 import { useToast } from "~/components/ui/toast"
 
@@ -44,7 +44,7 @@ export default function () {
   }, [fetcher.data, toast])
 
   const bodyAction = useCallback((data: NonNullable<typeof fetcher["data"]>["records"][number]) => {
-    return <Button onClick={() => setDialog("asd ")}>Detail</Button>
+    return <Link to={`/dashboard/rsvp/record/${data.recordId}`}>Details</Link>
   }, [])
 
   const columnAction = (data: NonNullable<typeof fetcher["data"]>["records"][number]) => {
@@ -121,7 +121,7 @@ export default function () {
             <Column field="status" sortable header="Status"></Column>
             <Column field="details.capacity" header="Capacity"></Column>
             <Column field="details.phoneNumber" header="Phone Number"></Column>
-            {/* <Column header="Action" body={bodyAction}></Column> */}
+            <Column header="Action" body={bodyAction}></Column>
             <Column header="Approve" body={columnAction}></Column>
           </DataTable>
         )}
