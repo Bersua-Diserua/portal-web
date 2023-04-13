@@ -20,7 +20,7 @@ type SeatProps = {
   position?: SeatPosition
   size?: "large" | "medium" | "small" | "long"
   index: number
-  status: "OPEN" | "RESERVED" | "SELECTED" | "LOCKED" | "ON_HOLD"
+  status: "OPEN" | "RESERVED" | "SELECTED" | "LOCKED" | "HOLD"
   capacity: {
     max: number
     min: number
@@ -51,7 +51,7 @@ export const mapStatus: Record<SeatProps["status"], string> = {
   RESERVED: "bg-serua",
   SELECTED: "bg-[#ecbb58]",
   LOCKED: "bg-[#c8232b]",
-  ON_HOLD: "bg-purple-500",
+  HOLD: "bg-purple-500",
 }
 
 export function Seat(props: SeatProps & JSX.IntrinsicElements["button"]) {
@@ -78,12 +78,16 @@ export function Seat(props: SeatProps & JSX.IntrinsicElements["button"]) {
     }
   }
 
-  if (status == "RESERVED" || status === "ON_HOLD") {
+  if (status == "RESERVED") {
     reason = `Meja ${index} telah dipesan`
   }
 
+  if (status == "HOLD") {
+    reason = "Mohon tunggu 10-15 menit, karena meja sedang dipesan"
+  }
+
   const handleOnClick = () => {
-    if (status === "RESERVED" || status === "LOCKED" || status === "ON_HOLD") {
+    if (status === "RESERVED" || status === "LOCKED" || status === "HOLD") {
       return setError(reason)
     }
 

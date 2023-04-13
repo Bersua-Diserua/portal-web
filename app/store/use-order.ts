@@ -1,6 +1,7 @@
 import { create } from "zustand"
 
 type Item = {
+  name: string
   note: string
   count: number
   price: number
@@ -17,10 +18,10 @@ export type ProductsSubmission = {
 
 interface OrderState {
   products: Map<string, Item>
-  incrementItem: (idProduct: string, price: number) => void
-  decrementItem: (idProduct: string, price: number) => void
+  incrementItem: (idProduct: string, name: string, price: number) => void
+  decrementItem: (idProduct: string) => void
   detailsItem: (id: string) => Item
-  setNote: (id: string, note: string, price: number) => void
+  setNote: (id: string, note: string, name: string, price: number) => void
   debug: () => any
   calc: () => number
   toJson: () => ProductsSubmission
@@ -28,15 +29,17 @@ interface OrderState {
 
 const useOrder = create<OrderState>((set, get) => ({
   products: new Map(),
-  incrementItem: (id, price) => {
+  incrementItem: (id, name, price) => {
     const { products } = get()
     const exist = products.has(id)
 
     if (exist) {
       const item = products.get(id)!
       item.count++
+      item.name = name
     } else {
       products.set(id, {
+        name,
         count: 1,
         note: "",
         price,
@@ -44,8 +47,9 @@ const useOrder = create<OrderState>((set, get) => ({
     }
 
     set({ products })
+    console.log({ products })
   },
-  decrementItem(id, price) {
+  decrementItem(id) {
     const { products } = get()
     const exist = products.has(id)
 
@@ -65,9 +69,10 @@ const useOrder = create<OrderState>((set, get) => ({
       count: item?.count || 0,
       note: item?.note || "",
       price: item?.price || 0,
+      name: item?.name || "",
     }
   },
-  setNote(id, note, price) {
+  setNote(id, note, name, price) {
     const { products } = get()
     const exist = products.has(id)
 
@@ -79,6 +84,7 @@ const useOrder = create<OrderState>((set, get) => ({
         count: 0,
         note,
         price,
+        name,
       })
     }
 
@@ -94,7 +100,6 @@ const useOrder = create<OrderState>((set, get) => ({
     console.log({ count })
   },
   calc() {
-    // const { products } = get()
     return 0
   },
   toJson() {

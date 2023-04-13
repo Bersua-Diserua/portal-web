@@ -16,6 +16,7 @@ import { getObtainRsvpTicket } from "~/services/rsvp/obtain-ticket-rsvp"
 import { Invoice, type InvoiceProps } from "~/components/rsvp/invoice"
 import { Dialog } from "primereact/dialog"
 import clsxm from "~/utils"
+import { useOrder } from "~/store/use-order"
 
 export async function loader({ request, params }: LoaderArgs) {
   const { rsvpId } = params
@@ -45,6 +46,7 @@ export default function () {
   const fetcherSeat = useFetcher()
   const submitRsvp = useSubmitStringify()
   const { personalData, step, setStep, submit, error, setError } = useRsvp()
+  const { products: listProduct } = useOrder()
   const [scrolled, setScrolled] = useState(false)
 
   const doFetchSeat = useCallback((date: string) => {
@@ -96,20 +98,23 @@ export default function () {
   }
 
   const mockConfirmation: InvoiceProps = {
+    ...submit(),
     typeInvoice: "CONFIRMATION",
-    name: "Rei Mock",
-    date: new Date().toISOString(),
-    phone: "628xxxx",
-    products: [
-      {
-        name: "Mock 1",
-        desc: "Desc mock 1",
-        count: "2",
-        price: "1000",
-        total: "2000",
-      },
-    ],
-    total: "3000",
+    phone: "62" + submit().phoneNumber,
+    products: Array.from(listProduct).map((x) => {
+      const [, val] = x
+      return {
+        count: val.count,
+        name: val.name,
+        price: val.price,
+        total: val.count * val.price,
+        desc: val.note,
+      }
+    }),
+    total: Array.from(listProduct).reduce<number>((prev, curr) => {
+      const [, val] = curr
+      return (prev += val.count * val.price)
+    }, 0),
   }
 
   return (
@@ -196,10 +201,27 @@ export default function () {
       )}
       {step === "ORDER" && <OrderContent products={products} />}
       {step === "CONFIRMATION" && <Invoice data={mockConfirmation} />}
+      {scrolled && (
+        <div className="flex sticky bottom-20 justify-end">
+          <div className="rounded-full supports-backdrop-blur:bg-serua/80 p-3 text-white cursor-pointer" onClick={backToTop}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75L12 3m0 0l3.75 3.75M12 3v18" />
+            </svg>
+          </div>
+        </div>
+      )}
       <div
         className={clsxm(
-          "flex flex-row items-center gap-x-5 sticky bottom-20 justify-end",
-          step === "FORM" ? "justify-end" : "justify-between"
+          "flex flex-row items-center gap-x-5 justify-end",
+          step === "FORM" ? "justify-end" : "justify-between",
+          step === "ORDER" && scrolled ? "sticky bottom-4" : ""
         )}
       >
         {step !== "FORM" && (
@@ -217,22 +239,6 @@ export default function () {
           Next
         </Button>
       </div>
-      {scrolled && (
-        <div className="flex sticky bottom-4 justify-end">
-          <div className="rounded-full supports-backdrop-blur:bg-serua/80 p-3 text-white cursor-pointer" onClick={backToTop}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75L12 3m0 0l3.75 3.75M12 3v18" />
-            </svg>
-          </div>
-        </div>
-      )}
       <Dialog header="UPSSS!!! ADA YANG SALAH NIHH!!" visible={!!error} style={{ width: "50vw" }} onHide={() => setError("")}>
         <p className="m-0">{error}</p>
       </Dialog>

@@ -1,8 +1,9 @@
+import { Invoice, type InvoiceProps } from "~/components/rsvp/invoice"
 import type { LoaderArgs } from "@remix-run/node"
+import { getDetailsRsvpRecord } from "~/services/rsvp/details-record"
 import { json } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
 import { Button } from "primereact/button"
-import { getDetailsRsvpRecord } from "~/services/rsvp/details-record"
 import type { ConfirmDialogProps } from "primereact/confirmdialog"
 import { ConfirmDialog } from "primereact/confirmdialog"
 import { confirmDialog } from "primereact/confirmdialog"
@@ -11,17 +12,15 @@ import { StatusRsvp } from "~/components/rsvp/status"
 import { useCallback, useState, useMemo } from "react"
 import type { RsvpRecordStatus } from "~/services/rsvp/status-types"
 import { InputText } from "primereact/inputtext"
-import type { InvoiceProps } from "~/components/rsvp/invoice"
-import { Invoice } from "~/components/rsvp/invoice"
 
 export async function loader({ params }: LoaderArgs) {
   const { recordId } = params
   if (typeof recordId !== "string") throw new Error("Invalid parameter")
 
-  const data = await getDetailsRsvpRecord(recordId)
+  const { record } = await getDetailsRsvpRecord(recordId)
   return json({
     recordId,
-    record: data.record,
+    record,
   })
 }
 
@@ -92,10 +91,10 @@ export default function () {
 
   return (
     <div>
-      {/* Data */}
-      <div className="flex">
-        <p>Name</p>
-        <p>{record.name}</p>
+      <div className="flex flex-row justify-around">
+        <Button>Approve</Button>
+        <Button severity="success">Verify Paid</Button>
+        <Button severity="danger">Reject</Button>
       </div>
       <div className="flex">
         <p>Status :&nbsp;</p>
@@ -120,13 +119,15 @@ export default function () {
 function InvoiceDashboard() {
   const { record: invoice } = useLoaderData<typeof loader>()
 
-  const record = useMemo(() => {
-    const data: InvoiceProps = {
+  const record = useMemo((): InvoiceProps => {
+    return {
       typeInvoice: "INVOICE",
       invoiceNumber: invoice.id,
       name: invoice.name,
+      seatIndex: invoice.seatIndex,
       date: invoice.date,
       phone: invoice.customer.phoneNumber!,
+      time: "",
       products: invoice.products.map((x) => {
         return {
           count: x.amount,
@@ -138,7 +139,7 @@ function InvoiceDashboard() {
       }),
       total: invoice.transaction.amount,
     }
-    return data
   }, [invoice])
+
   return <Invoice data={record} />
 }
