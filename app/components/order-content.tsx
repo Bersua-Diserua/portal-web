@@ -75,12 +75,12 @@ function ProductPreview(props: ProductPreviewProps) {
   const { count, note } = detailsItem(id)
 
   const handleIncrement = useCallback(() => {
-    incrementItem(id, price.amount)
-  }, [id, incrementItem, price.amount])
+    incrementItem(id, name, price.amount)
+  }, [id, incrementItem, price.amount, name])
 
   const handleDecrement = useCallback(() => {
-    decrementItem(id, price.amount)
-  }, [id, decrementItem, price.amount])
+    decrementItem(id)
+  }, [id, decrementItem])
 
   return (
     // <div className="flex border gap-2 max-h-[8rem] bg-red-500 items-center p-2">
@@ -128,7 +128,7 @@ function ProductPreview(props: ProductPreviewProps) {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="Notes untuk pesanan ini"
                 value={note}
-                onChange={(e) => setNote(id, e.target.value, price.amount)}
+                onChange={(e) => setNote(id, e.target.value, name, price.amount)}
               />
             </div>
             <div className="flex flex-row gap-x-2 items-center">

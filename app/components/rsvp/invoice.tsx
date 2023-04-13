@@ -1,5 +1,6 @@
 import "moment/locale/id"
 
+import { currency } from "~/utils/currency-formatter"
 import moment from "moment"
 
 type ProductProps = {
@@ -30,7 +31,7 @@ export function Invoice(props: { data: InvoiceProps }) {
         {data.typeInvoice === "INVOICE" && (
           <div className="flex flex-col gap-y-2">
             <p>Invoice</p>
-            <p>SERUA/{data.invoiceNumber}</p>
+            <p className="uppercase">SERUA/{data.invoiceNumber}</p>
           </div>
         )}
       </div>
@@ -42,7 +43,7 @@ export function Invoice(props: { data: InvoiceProps }) {
           <p className="font-bold text-black">Untuk</p>
           <div className="grid grid-cols-2">
             <p>Nama</p>
-            <p className="text-black font-bold">: {data.name}</p>
+            <p className="text-black font-bold capitalize">: {data.name}</p>
             <p>Tanggal Reservasi</p>
             <p className="text-black font-bold">: {moment(data.date).locale("id").format("dddd, DD MMMM YYYY")}</p>
             <p>Nomor Whatsapp</p>
@@ -75,8 +76,8 @@ export function Invoice(props: { data: InvoiceProps }) {
                   </div>
                 </td>
                 <td className="py-4 text-right">{val.count}</td>
-                <td className="py-4 text-right">{val.price}</td>
-                <td className="py-4 text-right">{val.total}</td>
+                <td className="py-4 text-right">{currency.format(val.price)}</td>
+                <td className="py-4 text-right">{currency.format(val.total)}</td>
               </tr>
             ))}
           </tbody>
@@ -85,7 +86,7 @@ export function Invoice(props: { data: InvoiceProps }) {
           <div className="flex flex-col w-1/2">
             <div className="flex flex-row justify-between font-bold text-black">
               <p className="uppercase">Total Harga ({data.products.length} barang)</p>
-              <p>{data.total}</p>
+              <p>{currency.format(data.total)}</p>
             </div>
           </div>
         </div>

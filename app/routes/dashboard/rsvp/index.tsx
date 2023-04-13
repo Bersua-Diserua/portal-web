@@ -1,3 +1,4 @@
+import { Link, useFetcher } from "@remix-run/react"
 import { useCallback, useEffect, useState } from "react"
 
 import { Button } from "primereact/button"
@@ -9,7 +10,6 @@ import { DataTable } from "primereact/datatable"
 import { Dialog } from "primereact/dialog"
 import type { Nullable } from "primereact/ts-helpers"
 import type { PreviewLoader } from "./preview"
-import { Link, useFetcher } from "@remix-run/react"
 import { useFetcherStringify } from "~/utils/use-submit–stringify"
 import { useToast } from "~/components/ui/toast"
 
@@ -47,59 +47,25 @@ export default function () {
     return <Link to={`/dashboard/rsvp/record/${data.recordId}`}>Details</Link>
   }, [])
 
-  const columnAction = (data: NonNullable<typeof fetcher["data"]>["records"][number]) => {
-    let updateStatus = "ON_HOLD"
-
-    if (data.status === "SUBMISSION") {
-      updateStatus = "ON_HOLD"
-    } else if (updateStatus === "ON_HOLD") {
-      updateStatus = "RESOLVE"
-    }
-
+  const approveAction = (data: NonNullable<typeof fetcher["data"]>["records"][number]) => {
     return (
-      <div className="flex flex-row gap-x-2">
-        {data.status === "SUBMISSION" ||
-          (data.status === "ON_HOLD" && (
-            <Button
-              severity="danger"
-              onClick={() =>
-                fetcherApproval.submit(
-                  {
-                    rsvpId: fetcher.data?.rsvp.id,
-                    status: "REJECT",
-                    recordId: data.recordId,
-                  },
-                  {
-                    action: "/api/rsvp/status",
-                    method: "post",
-                  }
-                )
-              }
-            >
-              Reject
-            </Button>
-          ))}
-        {data.status !== "RESOLVE" && (
-          <Button
-            severity={data.status === "ON_HOLD" ? "success" : undefined}
-            onClick={() =>
-              fetcherApproval.submit(
-                {
-                  rsvpId: fetcher.data?.rsvp.id,
-                  status: updateStatus,
-                  recordId: data.recordId,
-                },
-                {
-                  action: "/api/rsvp/status",
-                  method: "post",
-                }
-              )
+      <Button
+        onClick={() =>
+          fetcherApproval.submit(
+            {
+              rsvpId: fetcher.data?.rsvp.id,
+              status: "RESOLVE",
+              recordId: data.recordId,
+            },
+            {
+              action: "/api/rsvp/status",
+              method: "post",
             }
-          >
-            {data.status === "SUBMISSION" ? "Approve" : "Paid"}
-          </Button>
-        )}
-      </div>
+          )
+        }
+      >
+        Approve
+      </Button>
     )
   }
 
@@ -122,7 +88,7 @@ export default function () {
             <Column field="details.capacity" header="Capacity"></Column>
             <Column field="details.phoneNumber" header="Phone Number"></Column>
             <Column header="Action" body={bodyAction}></Column>
-            <Column header="Approve" body={columnAction}></Column>
+            <Column header="Approve" body={approveAction}></Column>
           </DataTable>
         )}
       </ClientOnly>
