@@ -1,7 +1,6 @@
 import { Link, useFetcher } from "@remix-run/react"
 import { useCallback, useEffect, useState } from "react"
 
-import { Button } from "primereact/button"
 import { Calendar } from "primereact/calendar"
 import type { CalendarChangeEvent } from "primereact/calendar"
 import { ClientOnly } from "remix-utils"
@@ -10,12 +9,11 @@ import { DataTable } from "primereact/datatable"
 import { Dialog } from "primereact/dialog"
 import type { Nullable } from "primereact/ts-helpers"
 import type { PreviewLoader } from "./preview"
-import { useFetcherStringify } from "~/utils/use-submit–stringify"
 import { useToast } from "~/components/ui/toast"
+import { StatusRsvp } from "~/components/rsvp/status"
 
 export default function () {
   const fetcher = useFetcher<PreviewLoader>()
-  const fetcherApproval = useFetcherStringify()
   const toast = useToast()
   const [dialog, setDialog] = useState<null | string>(null)
 
@@ -47,27 +45,9 @@ export default function () {
     return <Link to={`/dashboard/rsvp/record/${data.recordId}`}>Details</Link>
   }, [])
 
-  const approveAction = (data: NonNullable<typeof fetcher["data"]>["records"][number]) => {
-    return (
-      <Button
-        onClick={() =>
-          fetcherApproval.submit(
-            {
-              rsvpId: fetcher.data?.rsvp.id,
-              status: "RESOLVE",
-              recordId: data.recordId,
-            },
-            {
-              action: "/api/rsvp/status",
-              method: "post",
-            }
-          )
-        }
-      >
-        Approve
-      </Button>
-    )
-  }
+  const statusColumn = useCallback((data: NonNullable<typeof fetcher["data"]>["records"][number]) => {
+    return <StatusRsvp status={data.status} />
+  }, [])
 
   return (
     <>
@@ -84,11 +64,10 @@ export default function () {
           >
             <Column field="seat" sortable header="Seat"></Column>
             <Column field="details.name" sortable header="Name"></Column>
-            <Column field="status" sortable header="Status"></Column>
+            <Column field="status" sortable header="Status" body={statusColumn}></Column>
             <Column field="details.capacity" header="Capacity"></Column>
             <Column field="details.phoneNumber" header="Phone Number"></Column>
             <Column header="Action" body={bodyAction}></Column>
-            {/* <Column header="Approve" body={approveAction}></Column> */}
           </DataTable>
         )}
       </ClientOnly>
