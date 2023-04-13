@@ -19,6 +19,8 @@ export type InvoiceProps = {
   phone: string
   products: ProductProps[]
   total: number
+  time: string
+  seatIndex: number
 }
 
 export function Invoice(props: { data: InvoiceProps }) {
@@ -46,6 +48,10 @@ export function Invoice(props: { data: InvoiceProps }) {
             <p className="text-black font-bold capitalize">: {data.name}</p>
             <p>Tanggal Reservasi</p>
             <p className="text-black font-bold">: {moment(data.date).locale("id").format("dddd, DD MMMM YYYY")}</p>
+            <p>Waktu Reservasi</p>
+            <p className="text-black font-bold">: {data.time}</p>
+            <p>Meja</p>
+            <p className="text-black font-bold">: {data.seatIndex}</p>
             <p>Nomor Whatsapp</p>
             <p className="text-black font-bold">: {data.phone}</p>
           </div>

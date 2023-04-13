@@ -9,7 +9,7 @@ export function RsvpSeat({
 }: {
   seatsBooked: {
     index: number
-    status: "EMPTY" | "APPROVED" | "ON_HOLD" | "SUBMISSION"
+    status: "EMPTY" | "APPROVED" | "HOLD" | "SUBMISSION"
   }[]
 }) {
   const [selected, setSelected] = useState<SeatConfig | null>(null)

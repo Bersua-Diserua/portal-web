@@ -98,9 +98,8 @@ export default function () {
   }
 
   const mockConfirmation: InvoiceProps = {
+    ...submit(),
     typeInvoice: "CONFIRMATION",
-    name: submit().name,
-    date: submit().date,
     phone: "62" + submit().phoneNumber,
     products: Array.from(listProduct).map((x) => {
       const [, val] = x

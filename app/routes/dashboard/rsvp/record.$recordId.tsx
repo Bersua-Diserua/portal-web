@@ -4,6 +4,7 @@ import type { LoaderArgs } from "@remix-run/node"
 import { getDetailsRsvpRecord } from "~/services/rsvp/details-record"
 import { json } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
+import { Button } from "primereact/button"
 
 export async function loader({ params }: LoaderArgs) {
   const { recordId } = params
@@ -28,6 +29,8 @@ export async function loader({ params }: LoaderArgs) {
       }
     }),
     total: data.transaction.amount,
+    time: data.time,
+    seatIndex: data.seatIndex,
   }
 
   return json({
@@ -41,6 +44,11 @@ export default function () {
   return (
     <div>
       <Invoice data={record} />
+      <div className="flex flex-row justify-around">
+        <Button>Approve</Button>
+        <Button severity="success">Verify Paid</Button>
+        <Button severity="danger">Reject</Button>
+      </div>
     </div>
   )
 }

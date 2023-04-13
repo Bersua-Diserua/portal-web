@@ -88,7 +88,7 @@ export default function () {
             <Column field="details.capacity" header="Capacity"></Column>
             <Column field="details.phoneNumber" header="Phone Number"></Column>
             <Column header="Action" body={bodyAction}></Column>
-            <Column header="Approve" body={approveAction}></Column>
+            {/* <Column header="Approve" body={approveAction}></Column> */}
           </DataTable>
         )}
       </ClientOnly>
