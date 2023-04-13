@@ -1,11 +1,12 @@
 import { z } from "zod"
 import { api } from "../core"
-import { rsvpRecordStatus } from "./management/details"
+import { rsvpRecordStatus } from "./status-types"
 
 const schema = z.object({
   status: rsvpRecordStatus,
-  rejectedReason: z.null(),
+  rejectedReason: z.string().nullable(),
   customerId: z.string(),
+  rsvpDailyId: z.string(),
   capacity: z.string(),
   capacityNumber: z.number(),
   date: z.string(),
@@ -43,6 +44,7 @@ type Res = TResponse<{
 export async function getDetailsRsvpRecord(recordId: string) {
   const { data } = await api.get<Res>(`/rsvp/record/${recordId}/details`)
   const record = schema.parse(data.payload.record)
+
   return {
     record,
   }

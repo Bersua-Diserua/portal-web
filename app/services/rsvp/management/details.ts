@@ -1,9 +1,7 @@
 import { api, getHeaders } from "~/services/core"
-
 import qs from "querystring"
 import { z } from "zod"
-
-export const rsvpRecordStatus = z.enum(["TICKET", "SUBMISSION", "SUBMISSION.APPROVE", "ON_HOLD", "PAYMENT", "RESOLVE", "REJECT"])
+import { rsvpRecordStatus } from "../status-types"
 
 const schema = z.array(
   z.object({
