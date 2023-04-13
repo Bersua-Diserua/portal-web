@@ -38,7 +38,8 @@ export default function () {
 
   return (
     <div>
-      <div>
+      <h1 className="text-lg font-bold">Products</h1>
+      <div className="flex w-full items-end gap-5 justify-end mb-4">
         <Link to="/dashboard/product/add">
           <Button>Add product</Button>
         </Link>
@@ -46,7 +47,6 @@ export default function () {
           <Button>Categories</Button>
         </Link>
       </div>
-      <h1>Products</h1>
       <DataTable value={products} tableStyle={{ minWidth: "50rem" }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]}>
         <Column field="name" sortable header="Name"></Column>
         <Column field="desc" header="Description"></Column>

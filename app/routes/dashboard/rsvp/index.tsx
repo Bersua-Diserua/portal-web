@@ -50,9 +50,12 @@ export default function () {
   }, [])
 
   return (
-    <>
-      <p>Table Management</p>
-      <Calendar minDate={minDate} maxDate={maxDate} value={date} onChange={(e: CalendarChangeEvent) => setDate(e.value)} />
+    <div>
+      <h1 className="text-lg font-bold mb-4">Reservation</h1>
+      <div className="flex gap-4 mb-4 flex-col">
+        <label htmlFor="calendar">Choose date:</label>
+        <Calendar id="calendar" minDate={minDate} maxDate={maxDate} value={date} onChange={(e: CalendarChangeEvent) => setDate(e.value)} />
+      </div>
       <ClientOnly>
         {() => (
           <DataTable
@@ -74,6 +77,6 @@ export default function () {
       <Dialog visible={!!dialog} resizable draggable onHide={() => setDialog(null)}>
         {dialog}
       </Dialog>
-    </>
+    </div>
   )
 }

@@ -43,10 +43,10 @@ export default function () {
   }
 
   return (
-    <div>
+    <div className="pb-4">
       <div>
-        <h1>New category</h1>
-        <Form method="post" reloadDocument>
+        <h1 className="text-lg font-bold mb-4">Tambah Kategori</h1>
+        <Form method="post" reloadDocument className="flex gap-5 mb-4">
           <InputText name="name" />
           <Button type="submit">Submit</Button>
         </Form>

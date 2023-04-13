@@ -26,6 +26,11 @@ const CONFIG: SidebarButonProps[] = [
     icon: <MdRsvp />,
   },
   {
+    to: "/dashboard/management",
+    children: "User",
+    icon: <MdRsvp />,
+  },
+  {
     to: "/logout",
     children: "Logout",
     icon: <MdLogout />,
@@ -65,7 +70,7 @@ export function Sidebar() {
   return (
     <aside
       aria-label="Default sidebar example"
-      className="fixed hidden inset-0 top-0 z-20 flex-none min-h-screen bg-red-200 w-72 lg:static lg:h-auto lg:overflow-y-visible lg:w-48 lg:block border-r border-gray-300"
+      className="fixed hidden inset-0 top-0 z-20 flex-none min-h-screen w-72 lg:static lg:h-auto lg:overflow-y-visible lg:w-48 lg:block border-r border-gray-300"
     >
       <div className="pt-4 flex flex-col gap-4 pr-6">
         {CONFIG.map((x) => {

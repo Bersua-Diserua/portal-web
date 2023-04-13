@@ -6,11 +6,8 @@ import { parseStringify, useFetcherStringify } from "~/utils/use-submit–string
 
 export async function action({ request }: ActionArgs) {
   const auth = await getRequiredAuth(request)
-
   const data = await parseStringify<UpdateStatusRecord>(request)
-  console.log({ data })
   await updateStatusRecord(data, auth)
-
   return null
 }
 
