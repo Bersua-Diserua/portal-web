@@ -9,9 +9,7 @@ export type UpdateStatusRecord = {
 }
 
 export async function updateStatusRecord(payload: UpdateStatusRecord, auth: Auth) {
-  const { data } = await api.put("/rsvp/management/status", payload, getHeaders(auth))
-
-  console.log({ data })
-
+  const { data, status } = await api.put("/rsvp/management/status", payload, getHeaders(auth))
+  console.log({ data, status })
   return data
 }

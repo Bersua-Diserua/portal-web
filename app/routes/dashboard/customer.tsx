@@ -16,6 +16,7 @@ export async function loader({ request }: LoaderArgs) {
     customers,
   })
 }
+
 export default function () {
   const { customers } = useLoaderData<typeof loader>()
   const [globalFilterValue, setGlobalFilterValue] = useState<string>("")
