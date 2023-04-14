@@ -90,12 +90,7 @@ export default function () {
   const { status } = record
 
   return (
-    <div>
-      <div className="flex flex-row justify-around">
-        <Button>Approve</Button>
-        <Button severity="success">Verify Paid</Button>
-        <Button severity="danger">Reject</Button>
-      </div>
+    <div className="flex flex-col gap-y-4">
       <div className="flex">
         <p>Status :&nbsp;</p>
         <StatusRsvp status={record.status} />
@@ -103,10 +98,20 @@ export default function () {
       <div>
         <ConfirmDialog />
         <div className="flex gap-5">
-          {status === "SUBMISSION.APPROVE" && <Button onClick={generateConfirmDialog("RESOLVE")}>Terima Pembayaran</Button>}
-          {status === "SUBMISSION" && <Button onClick={generateConfirmDialog("SUBMISSION.APPROVE")}>Terima Pesanan</Button>}
+          {status === "SUBMISSION.APPROVE" && (
+            <Button severity="success" onClick={generateConfirmDialog("RESOLVE")}>
+              Terima Pembayaran
+            </Button>
+          )}
+          {status === "SUBMISSION" && (
+            <Button severity="success" onClick={generateConfirmDialog("SUBMISSION.APPROVE")}>
+              Terima Pesanan
+            </Button>
+          )}
           {(status === "SUBMISSION" || status === "SUBMISSION.APPROVE") && (
-            <Button onClick={generateConfirmDialog("REJECT")}>Tolak Pesanan</Button>
+            <Button severity="danger" onClick={generateConfirmDialog("REJECT")}>
+              Tolak Pesanan
+            </Button>
           )}
           {status === "REJECT" && <p>{record.rejectedReason}</p>}
         </div>
@@ -138,6 +143,8 @@ function InvoiceDashboard() {
         }
       }),
       total: invoice.transaction.amount,
+      status: invoice.status,
+      rejectedReason: invoice.rejectedReason,
     }
   }, [invoice])
 

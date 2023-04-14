@@ -1,5 +1,6 @@
 import type { ProductsSubmission } from "./use-order"
 import { create } from "zustand"
+import moment from "moment"
 import { useOrder } from "./use-order"
 import { z } from "zod"
 
@@ -146,7 +147,7 @@ const useRsvp = create<RsvpState>((set, get) => ({
       name,
       email,
       date: date.toISOString(),
-      time: `${time.getHours()}: ${time.getMinutes()}`,
+      time: `${moment(time).format("HH:mm")}`,
       seatIndex: selectedSeat as number,
       capacity: `${capacity.min}-${capacity.max}`,
       capacityNumber: capacity.max,

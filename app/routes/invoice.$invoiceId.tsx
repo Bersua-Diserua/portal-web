@@ -24,10 +24,9 @@ export default function () {
   const { invoice } = useLoaderData<typeof loader>()
   const record = useMemo(() => {
     const data: InvoiceProps = {
+      ...invoice,
       typeInvoice: "INVOICE",
       invoiceNumber: invoice.id,
-      name: invoice.name,
-      date: invoice.date,
       phone: invoice.customer.phoneNumber!,
       products: invoice.products.map((x) => {
         return {

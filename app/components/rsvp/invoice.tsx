@@ -1,5 +1,7 @@
 import "moment/locale/id"
 
+import { ALIAS_INVOICE } from "./status"
+import { type RsvpRecordStatus } from "~/services/rsvp/status-types"
 import { currency } from "~/utils/currency-formatter"
 import moment from "moment"
 
@@ -21,6 +23,8 @@ export type InvoiceProps = {
   total: number
   time: string
   seatIndex: number
+  status: RsvpRecordStatus
+  rejectedReason: string | null
 }
 
 export function Invoice(props: { data: InvoiceProps }) {
@@ -47,13 +51,17 @@ export function Invoice(props: { data: InvoiceProps }) {
             <p>Nama</p>
             <p className="text-black font-bold capitalize">: {data.name}</p>
             <p>Tanggal Reservasi</p>
-            <p className="text-black font-bold">: {moment(data.date).locale("id").format("dddd, DD MMMM YYYY")}</p>
-            <p>Waktu Reservasi</p>
-            <p className="text-black font-bold">: {data.time}</p>
+            <p className="text-black font-bold">: {`${moment(data.date).locale("id").format("dddd, DD MMMM YYYY")} - ${data.time}`}</p>
             <p>Meja</p>
             <p className="text-black font-bold">: {data.seatIndex}</p>
             <p>Nomor Whatsapp</p>
             <p className="text-black font-bold">: {data.phone}</p>
+            {data.typeInvoice === "INVOICE" && (
+              <>
+                <p>Status</p>
+                <p className="text-black font-bold">: {ALIAS_INVOICE[data.status]}</p>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -97,11 +105,17 @@ export function Invoice(props: { data: InvoiceProps }) {
           </div>
         </div>
       </div>
+      {data.status === "REJECT" && (
+        <div className="flex flex-col items-center justify-center gap-y-1 border-y-2 border-red-500 py-2">
+          <p className="text-sm font-bold">Alasan Ditolak</p>
+          <p>{data.rejectedReason}</p>
+        </div>
+      )}
       <div className="flex flex-col gap-y-1 text-xs">
         <p>Invoice ini sah dan diproses oleh komputer</p>
         <p>
           Silakan hubungi{" "}
-          <a href="https://google.com" className="text-serua font-bold">
+          <a href={`https://wa.me/6287766685825`} className="text-serua font-bold">
             SEVA (Serua Virtual Assistant)
           </a>{" "}
           apabila kamu membutuhkan bantuan.

@@ -7,8 +7,10 @@ export function SeatContainer(props: SeatContainerProps) {
   const { className, children, ...rest } = props
   return (
     <div {...rest} className={"border border-white w-full aspect-square rounded-lg relative bg-[#0f172a]"}>
-      <div className="bg-red-200 w-[65%] h-[70%] top-[15%] left-[18%] absolute rounded-lg" />
-      <div className="bg-red-500 w-[35%] h-[15%] bottom-[20%] left-[32%] absolute rounded-lg flex items-center justify-center">Bar</div>
+      <div className="bg-[#1e293b] w-[65%] h-[70%] top-[15%] left-[18%] absolute rounded-lg" />
+      <div className="bg-[#334155] w-[35%] h-[15%] bottom-[20%] left-[32%] absolute rounded-lg flex items-center justify-center border text-white">
+        Bar
+      </div>
       {children}
     </div>
   )

@@ -17,6 +17,7 @@ import { Invoice, type InvoiceProps } from "~/components/rsvp/invoice"
 import { Dialog } from "primereact/dialog"
 import clsxm from "~/utils"
 import { useOrder } from "~/store/use-order"
+import { parsePhoneNumber } from "~/utils/phone-number"
 
 export async function loader({ request, params }: LoaderArgs) {
   const { rsvpId } = params
@@ -99,8 +100,10 @@ export default function () {
 
   const mockConfirmation: InvoiceProps = {
     ...submit(),
+    status: "SUBMISSION",
     typeInvoice: "CONFIRMATION",
-    phone: "62" + submit().phoneNumber,
+    phone: "62" + parsePhoneNumber(submit().phoneNumber),
+    rejectedReason: null,
     products: Array.from(listProduct).map((x) => {
       const [, val] = x
       return {
@@ -183,11 +186,15 @@ export default function () {
                   </div>
 
                   <div className="flex flex-row gap-x-2 items-center">
-                    <div className={`h-5 w-5 rounded-full border ${mapStatus.SELECTED}`}></div>
-                    <p>Selected</p>
+                    <div className={`h-5 w-5 rounded-full border ${mapStatus.HOLD}`}></div>
+                    <p>On Hold</p>
                   </div>
                 </div>
                 <div className="flex flex-row gap-x-8">
+                  <div className="flex flex-row gap-x-2 items-center">
+                    <div className={`h-5 w-5 rounded-full border ${mapStatus.SELECTED}`}></div>
+                    <p>Selected</p>
+                  </div>
                   <div className="flex flex-row gap-x-2 items-center">
                     <div className={`h-5 w-5 rounded-full border ${mapStatus.OPEN}`}></div>
                     <p>Open</p>
