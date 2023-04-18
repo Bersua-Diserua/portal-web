@@ -128,7 +128,7 @@ export default function () {
         </p>
         <p className="text-lg">Silahkan isi formulir untuk melakukan reservasi.</p>
       </div>
-      <ol className="flex justify-around items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 top-0">
+      <ol className="flex justify-around items-center w-full p-3 space-x-2 text-xs md:text-sm font-medium text-center text-gray-500 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 top-0">
         <li className={`flex items-center cursor-pointer ${step === "FORM" && "text-serua"}`} onClick={() => setStep("FORM")}>
           <span
             className={`flex items-center justify-center w-5 h-5 mr-2 text-xs border rounded-full shrink-0 ${
@@ -137,7 +137,7 @@ export default function () {
           >
             1
           </span>
-          Data Diri
+          Informasi
         </li>
         <li className={`flex items-center cursor-pointer ${step === "ORDER" && "text-serua"}`} onClick={() => setStep("ORDER")}>
           <span
@@ -160,7 +160,7 @@ export default function () {
           >
             3
           </span>
-          Confirmation
+          Konfirmasi
         </li>
       </ol>
 
@@ -173,7 +173,7 @@ export default function () {
               ))}
             </SeatContainer>
             <div className="w-full flex flex-row justify-center">
-              <div className="w-max flex flex-col gap-2 items-center bg-[#0f172a] text-white rounded-lg py-5 px-10">
+              <div className="w-max flex flex-col gap-3 items-center bg-[#0f172a] text-white rounded-lg py-5 px-8 md:px-10 text-xs md:text-sm">
                 <div className="flex flex-row gap-x-8">
                   <div className="flex flex-row gap-x-2 items-center">
                     <div className={`h-5 w-5 rounded-full border ${mapStatus.LOCKED}`}></div>
@@ -187,7 +187,7 @@ export default function () {
 
                   <div className="flex flex-row gap-x-2 items-center">
                     <div className={`h-5 w-5 rounded-full border ${mapStatus.HOLD}`}></div>
-                    <p>On Hold</p>
+                    <p>Hold</p>
                   </div>
                 </div>
                 <div className="flex flex-row gap-x-8">
@@ -246,7 +246,7 @@ export default function () {
           Next
         </Button>
       </div>
-      <Dialog header="UPSSS!!! ADA YANG SALAH NIHH!!" visible={!!error} style={{ width: "50vw" }} onHide={() => setError("")}>
+      <Dialog className="w-[80vw] lg:w-[50vw]" header="UPSSS!!! ADA YANG SALAH NIHH!!" visible={!!error} onHide={() => setError("")}>
         <p className="m-0">{error}</p>
       </Dialog>
     </div>

@@ -105,7 +105,7 @@ export function Seat(props: SeatProps & JSX.IntrinsicElements["button"]) {
     <>
       <button
         {...rest}
-        className={clsxm("absolute border rounded-md w-8 h-8 text-white font-bold", mapStatus[status])}
+        className={clsxm("absolute border rounded-md w-8 h-8 text-white font-bold text-xs md:text-md", mapStatus[status])}
         style={{
           ...position,
           ...mapSize[size],

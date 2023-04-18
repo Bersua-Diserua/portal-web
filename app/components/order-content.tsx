@@ -100,7 +100,7 @@ function ProductPreview(props: ProductPreviewProps) {
     //   </div>
     // </div>
     <div className="bg-white shadow-md rounded-3xl p-4">
-      <div className="flex flex-row items-center gap-x-4">
+      <div className="flex flex-col md:flex-row items-center gap-x-4">
         <img src={img} alt="image_product" className="aspect-square	w-32 object-cover h-32 rounded-2xl" />
         <div className="flex flex-col py-2 w-full gap-y-4">
           <div className="flex flex-row items-center gap-x-5">
@@ -126,7 +126,7 @@ function ProductPreview(props: ProductPreviewProps) {
               <input
                 type="text"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="Notes untuk pesanan ini"
+                placeholder="Notes pesanan"
                 value={note}
                 onChange={(e) => setNote(id, e.target.value, name, price.amount)}
               />

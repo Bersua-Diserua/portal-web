@@ -31,7 +31,7 @@ export function Invoice(props: { data: InvoiceProps }) {
   const { data } = props
 
   return (
-    <div className="flex flex-col w-full p-5 rounded-xl shadow-2xl gap-y-8 bg-white">
+    <div className="flex flex-col w-full p-5 rounded-xl shadow-2xl gap-y-8 bg-white text-xs md:text-md">
       <div className="flex flex-row justify-between items-center">
         <img className="h-full w-44 object-cover" src="https://ik.imagekit.io/bersuadiserua22/icons/serua-transparent.png" alt="logo" />
         {data.typeInvoice === "INVOICE" && (
@@ -51,7 +51,7 @@ export function Invoice(props: { data: InvoiceProps }) {
             <p>Nama</p>
             <p className="text-black font-bold capitalize">: {data.name}</p>
             <p>Tanggal Reservasi</p>
-            <p className="text-black font-bold">: {`${moment(data.date).locale("id").format("dddd, DD MMMM YYYY")} - ${data.time}`}</p>
+            <p className="text-black font-bold">: {`${moment(data.date).locale("id").format("ddd, DD MMMM YYYY")} - ${data.time}`}</p>
             <p>Meja</p>
             <p className="text-black font-bold">: {data.seatIndex}</p>
             <p>Nomor Whatsapp</p>
@@ -73,11 +73,11 @@ export function Invoice(props: { data: InvoiceProps }) {
         />
         <table className="table-fixed">
           <thead>
-            <tr className="border-y-2 border-black">
+            <tr className="border-y-2 border-black whitespace-nowrap">
               <th className="py-4 text-left">Item</th>
               <th className="py-4 text-right">Jumlah</th>
-              <th className="py-4 text-right">Harga Satuan</th>
-              <th className="py-4 text-right">Total Harga</th>
+              <th className="py-4 text-right">Satuan</th>
+              <th className="py-4 text-right">Harga</th>
             </tr>
           </thead>
           <tbody>
@@ -85,11 +85,11 @@ export function Invoice(props: { data: InvoiceProps }) {
               <tr key={index} className="border-b border-gray-400">
                 <td className="py-4 text-left">
                   <div className="flex flex-col gap-y-1">
-                    <p className="text-xl font-bold">{val.name}</p>
+                    <p className="text-sm lg:text-xl font-bold">{val.name}</p>
                     <p className="text-xs">{val.desc}</p>
                   </div>
                 </td>
-                <td className="py-4 text-right">{val.count}</td>
+                <td className="py-4 text-center md:text-right">{val.count}</td>
                 <td className="py-4 text-right">{currency.format(val.price)}</td>
                 <td className="py-4 text-right">{currency.format(val.total)}</td>
               </tr>
@@ -97,7 +97,7 @@ export function Invoice(props: { data: InvoiceProps }) {
           </tbody>
         </table>
         <div className="flex flex-col items-end border-b border-gray-400 pb-4">
-          <div className="flex flex-col w-1/2">
+          <div className="flex flex-col w-full md:w-1/2">
             <div className="flex flex-row justify-between font-bold text-black">
               <p className="uppercase">Total Harga ({data.products.length} barang)</p>
               <p>{currency.format(data.total)}</p>
