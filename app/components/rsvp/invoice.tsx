@@ -76,8 +76,8 @@ export function Invoice(props: { data: InvoiceProps }) {
             <tr className="border-y-2 border-black whitespace-nowrap">
               <th className="py-4 text-left">Item</th>
               <th className="py-4 text-right">Jumlah</th>
-              <th className="py-4 text-right">Satuan</th>
               <th className="py-4 text-right">Harga</th>
+              <th className="py-4 text-right">Total</th>
             </tr>
           </thead>
           <tbody>
