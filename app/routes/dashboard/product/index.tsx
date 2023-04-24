@@ -3,7 +3,6 @@ import { Link, useLoaderData } from "@remix-run/react"
 import { Button } from "primereact/button"
 import { Column } from "primereact/column"
 import { DataTable } from "primereact/datatable"
-/* eslint-disable react/jsx-key */
 import type { LoaderArgs } from "@remix-run/node"
 import { getRequiredAuth } from "~/utils/authorization"
 import { json } from "@remix-run/node"
@@ -51,6 +50,7 @@ export default function () {
         <Column field="name" sortable header="Name"></Column>
         <Column field="desc" header="Description"></Column>
         <Column field="category.name" sortable header="Category"></Column>
+        <Column field="status" sortable header="Status"></Column>
         <Column header="Action" body={bodyAction}></Column>
         <Column header="Preview" body={bodyPreview}></Column>
       </DataTable>
