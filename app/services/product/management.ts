@@ -10,6 +10,7 @@ type Product = {
     id?: string
     name?: string
   }
+  status?: string
 }
 
 type ListProducts = TResponse<{

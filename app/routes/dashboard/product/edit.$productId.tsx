@@ -1,19 +1,20 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
-import { TextField } from "~/components/ui/form"
-import { z } from "zod"
-import { Button } from "primereact/button"
 import type { ActionArgs, LoaderArgs } from "@remix-run/node"
-import { redirect } from "@remix-run/node"
-import { json } from "@remix-run/node"
-import { useSubmitStringify, parseStringify } from "~/utils/use-submit–stringify"
+import { Controller, useForm } from "react-hook-form"
+import { getProductDetails, updateProduct } from "~/services/product/management"
+import { parseStringify, useSubmitStringify } from "~/utils/use-submit–stringify"
+
+import { Button } from "primereact/button"
+import { Dropdown } from "primereact/dropdown"
+import { TextField } from "~/components/ui/form"
+import clsxm from "~/utils"
 import { convertToBase64 } from "~/utils/convert"
 import { getRequiredAuth } from "~/utils/authorization"
-import { getProductDetails, updateProduct } from "~/services/product/management"
-import { useLoaderData } from "@remix-run/react"
+import { json } from "@remix-run/node"
 import { listCategories } from "~/services/product/category"
-import { Dropdown } from "primereact/dropdown"
-import clsxm from "~/utils"
+import { redirect } from "@remix-run/node"
+import { useLoaderData } from "@remix-run/react"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 export async function loader({ request, params }: LoaderArgs) {
   const { productId } = params
@@ -38,6 +39,7 @@ const validator = z.object({
     id: z.string(),
   }),
   image: z.string().optional().catch(undefined),
+  status: z.string().min(1),
 })
 
 export async function action({ request, params }: ActionArgs) {
@@ -45,7 +47,7 @@ export async function action({ request, params }: ActionArgs) {
   if (!productId || typeof productId !== "string") throw redirect("/dashboard/product")
   const auth = await getRequiredAuth(request)
 
-  const { name, desc, price, image, category } = await parseStringify<z.infer<typeof validator>>(request)
+  const { name, desc, price, image, category, status } = await parseStringify<z.infer<typeof validator>>(request)
   await updateProduct(auth, productId, {
     name,
     desc,
@@ -55,6 +57,7 @@ export async function action({ request, params }: ActionArgs) {
     },
     images: image ? [image] : undefined,
     category: category?.id || undefined,
+    status,
   })
   return redirect("/dashboard/product")
 }
@@ -112,6 +115,7 @@ export default function () {
         <TextField label="Name" {...register("name")} error={errors.name?.message} />
         <TextField label="Price" {...register("price")} error={errors.price?.message} type="number" />
         <TextField label="Description" {...register("desc")} error={errors.desc?.message} />
+        <TextField label="Status" {...register("status")} error={errors.status?.message} />
         <Button>Submit</Button>
       </form>
     </div>
