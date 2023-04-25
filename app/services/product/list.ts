@@ -16,6 +16,7 @@ export type Product = {
     url: string
   }[]
   id: string
+  status: string
 }
 
 type ResProducts = TResponse<{

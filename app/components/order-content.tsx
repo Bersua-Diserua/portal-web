@@ -68,7 +68,7 @@ const formatter = new Intl.NumberFormat("id-ID", {
 
 function ProductPreview(props: ProductPreviewProps) {
   const { incrementItem, detailsItem, setNote, decrementItem } = useOrder()
-  const { name, desc, price, id, images } = props
+  const { name, desc, price, id, images, status } = props
 
   const img = images[0].url
 
@@ -100,7 +100,7 @@ function ProductPreview(props: ProductPreviewProps) {
     //   </div>
     // </div>
     <div className="bg-white shadow-md rounded-3xl p-4">
-      <div className="flex flex-col md:flex-row items-center gap-x-4">
+      <div className="flex flex-col md:flex-row items-center gap-x-4" style={{ filter: status === "D" ? "grayscale(1)" : "none" }}>
         <img src={img} alt="image_product" className="aspect-square	w-32 object-cover h-32 rounded-2xl" />
         <div className="flex flex-col py-2 w-full gap-y-4">
           <div className="flex flex-row items-center gap-x-5">
@@ -135,7 +135,7 @@ function ProductPreview(props: ProductPreviewProps) {
               <button
                 className="mb-2 md:mb-0 bg-red-400 px-5 py-2 shadow-sm tracking-wider text-white rounded-full hover:bg-red-800"
                 type="button"
-                onClick={handleDecrement}
+                onClick={(e) => (status === "A" ? handleDecrement() : e.preventDefault())}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +151,7 @@ function ProductPreview(props: ProductPreviewProps) {
               <button
                 className="mb-2 md:mb-0 bg-green-500 px-5 py-2 shadow-sm tracking-wider text-white rounded-full hover:bg-green-800"
                 type="button"
-                onClick={handleIncrement}
+                onClick={(e) => (status === "A" ? handleIncrement() : e.preventDefault())}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
