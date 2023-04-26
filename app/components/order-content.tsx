@@ -4,54 +4,32 @@ import { useCallback, useRef } from "react"
 import type { Product } from "~/services/product/list"
 import { Toast } from "primereact/toast"
 import { useOrder } from "~/store/use-order"
+import { useState } from "react"
 
 export function OrderContent(props: Record<string, Record<string, Product[]>>) {
   const { products } = props
 
   const toast = useRef<Toast>(null)
-
-  // const accept = () => {
-  //   toast.current?.show({ severity: "info", summary: "Confirmed", detail: "You have accepted", life: 3000 })
-  // }
-
-  // const reject = () => {
-  //   toast.current?.show({ severity: "warn", summary: "Rejected", detail: "You have rejected", life: 3000 })
-  // }
-
-  // const confirm1 = () => {
-  //   confirmDialog({
-  //     message: "Are you sure you want to proceed?",
-  //     header: "Confirmation",
-  //     icon: "pi pi-exclamation-triangle",
-  //     accept,
-  //     reject,
-  //   })
-  // }
-
-  // const confirm2 = () => {
-  //   confirmDialog({
-  //     message: "Do you want to delete this record?",
-  //     header: "Delete Confirmation",
-  //     icon: "pi pi-info-circle",
-  //     acceptClassName: "p-button-danger",
-  //     accept,
-  //     reject,
-  //   })
-  // }
+  const [active, setActive] = useState<number | null>(0)
 
   return (
     <div>
       <Toast ref={toast} />
 
       <div className="flex flex-col gap-y-8">
-        {Object.keys(products).map((category) => (
+        {Object.keys(products).map((category, index) => (
           <div className="flex flex-col gap-y-4" key={category}>
-            <p className="text-xl font-bold" id={category}>
+            <p
+              className="text-xl font-bold cursor-pointer underline select-none"
+              id={category}
+              onClick={() => setActive(active === index ? null : index)}
+            >
               # {category}
             </p>
-            {products[category].map((product) => {
-              return <ProductPreview key={product.id} {...product} />
-            })}
+            {active == index &&
+              products[category].map((product) => {
+                return <ProductPreview key={product.id} {...product} />
+              })}
           </div>
         ))}
       </div>

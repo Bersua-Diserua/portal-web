@@ -63,7 +63,7 @@ export default function () {
           <Button>Categories</Button>
         </Link>
       </div>
-      <DataTable value={products} tableStyle={{ minWidth: "50rem" }} paginator rows={10} rowsPerPageOptions={[5, 10, 25, 50]}>
+      <DataTable value={products} tableStyle={{ minWidth: "50rem" }} paginator rows={10} rowsPerPageOptions={[5, 10, 25, 50, 100, 200]}>
         <Column field="name" sortable header="Name"></Column>
         <Column field="desc" header="Description"></Column>
         <Column field="category.name" sortable header="Category"></Column>
