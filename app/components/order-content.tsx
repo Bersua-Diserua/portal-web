@@ -10,7 +10,7 @@ export function OrderContent(props: Record<string, Record<string, Product[]>>) {
   const { products } = props
 
   const toast = useRef<Toast>(null)
-  const [active, setActive] = useState<number | null>(0)
+  const [active, setActive] = useState<number | null>(null)
 
   return (
     <div>
@@ -18,14 +18,25 @@ export function OrderContent(props: Record<string, Record<string, Product[]>>) {
 
       <div className="flex flex-col gap-y-8">
         {Object.keys(products).map((category, index) => (
-          <div className="flex flex-col gap-y-4" key={category}>
-            <p
-              className="text-xl font-bold cursor-pointer underline select-none"
-              id={category}
+          <div className="flex flex-col gap-y-4 cursor-pointer select-none" key={category}>
+            <div
+              className="flex flex-row items-center justify-between pb-2 border-b border-gray-300"
               onClick={() => setActive(active === index ? null : index)}
             >
-              # {category}
-            </p>
+              <p className="text-xl font-bold" id={category}>
+                # {category}
+              </p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className={`w-6 h-6 ${active === index ? "rotate-180" : "rotate-0"}`}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+              </svg>
+            </div>
             {active == index &&
               products[category].map((product) => {
                 return <ProductPreview key={product.id} {...product} />

@@ -7,7 +7,7 @@ import { z } from "zod"
 export const personalDataSchema = z.object({
   name: z.string(),
   phoneNumber: z.string().min(1),
-  time: z.instanceof(Date),
+  time: z.string(),
   date: z.instanceof(Date),
   email: z.string().email(),
   capacity: z.object({
@@ -118,7 +118,7 @@ const useRsvp = create<RsvpState>((set, get) => ({
   personalData: {
     name: "",
     phoneNumber: "",
-    time: new Date(),
+    time: "00:00",
     date: new Date(),
     capacity: persons[0].value,
     email: "",

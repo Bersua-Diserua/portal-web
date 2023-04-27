@@ -141,7 +141,7 @@ export function RsvpForm(props: FormPropsType) {
         <label htmlFor="time" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
           Jam
         </label>
-        <Calendar
+        {/* <Calendar
           className="w-full"
           id="calendar-timeonly"
           value={watch("time")}
@@ -150,6 +150,15 @@ export function RsvpForm(props: FormPropsType) {
             setValue("time", new Date(e.value.toString()))
           }}
           timeOnly
+        /> */}
+        <input
+          type="time"
+          className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          value={watch("time")}
+          onChange={(e) => {
+            if (!e.target.value) return
+            setValue("time", e.target.value.toString())
+          }}
         />
       </div>
     </form>
