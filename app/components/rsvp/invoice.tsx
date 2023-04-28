@@ -115,7 +115,7 @@ export function Invoice(props: { data: InvoiceProps }) {
         <p>Invoice ini sah dan diproses oleh komputer</p>
         <p>
           Silakan hubungi{" "}
-          <a href={`https://wa.me/6287766685825`} className="text-serua font-bold">
+          <a href={`https://wa.me/6287766685825?text=Halo+SEVA!`} className="text-serua font-bold">
             SEVA (Serua Virtual Assistant)
           </a>{" "}
           apabila kamu membutuhkan bantuan.

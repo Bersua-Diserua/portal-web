@@ -11,6 +11,7 @@ type Product = {
     name?: string
   }
   status?: string
+  isDeleted?: boolean
 }
 
 type ListProducts = TResponse<{

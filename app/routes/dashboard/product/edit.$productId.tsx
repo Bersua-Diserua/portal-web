@@ -39,7 +39,7 @@ const validator = z.object({
     id: z.string(),
   }),
   image: z.string().optional().catch(undefined),
-  status: z.string().min(1),
+  isDeleted: z.boolean().optional().catch(false),
 })
 
 export async function action({ request, params }: ActionArgs) {
@@ -47,18 +47,26 @@ export async function action({ request, params }: ActionArgs) {
   if (!productId || typeof productId !== "string") throw redirect("/dashboard/product")
   const auth = await getRequiredAuth(request)
 
-  const { name, desc, price, image, category, status } = await parseStringify<z.infer<typeof validator>>(request)
-  await updateProduct(auth, productId, {
-    name,
-    desc,
-    price: {
-      amount: price,
-      unit: "Porsi",
-    },
-    images: image ? [image] : undefined,
-    category: category?.id || undefined,
-    status,
+  const { name, desc, price, image, category, isDeleted } = await parseStringify<z.infer<typeof validator>>(request).then((x) => {
+    console.log({ x })
+    return x
   })
+  if (typeof isDeleted === "boolean") {
+    await updateProduct(auth, productId, { isDeleted })
+  } else {
+    await updateProduct(auth, productId, {
+      name,
+      desc,
+      price: {
+        amount: price,
+        unit: "Porsi",
+      },
+      images: image ? [image] : undefined,
+      category: category?.id || undefined,
+      isDeleted,
+    })
+  }
+
   return redirect("/dashboard/product")
 }
 
@@ -115,8 +123,12 @@ export default function () {
         <TextField label="Name" {...register("name")} error={errors.name?.message} />
         <TextField label="Price" {...register("price")} error={errors.price?.message} type="number" />
         <TextField label="Description" {...register("desc")} error={errors.desc?.message} />
-        <TextField label="Status" {...register("status")} error={errors.status?.message} />
-        <Button>Submit</Button>
+        <div className="flex flex-row gap-2">
+          <Button severity="danger" onClick={() => submit({ isDeleted: true }, { method: "post" })} type="button">
+            Delete
+          </Button>
+          <Button type="submit">Submit</Button>
+        </div>
       </form>
     </div>
   )
