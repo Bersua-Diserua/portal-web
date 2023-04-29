@@ -132,7 +132,7 @@ function InvoiceDashboard() {
       seatIndex: invoice.seatIndex,
       date: invoice.date,
       phone: invoice.customer.phoneNumber!,
-      time: "",
+      time: invoice.time,
       products: invoice.products.map((x) => {
         return {
           count: x.amount,

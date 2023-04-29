@@ -147,7 +147,7 @@ const useRsvp = create<RsvpState>((set, get) => ({
       name,
       email,
       date: date.toISOString(),
-      time: `${moment(time).format("HH:mm")}`,
+      time,
       seatIndex: selectedSeat as number,
       capacity: `${capacity.min}-${capacity.max}`,
       capacityNumber: capacity.max,
