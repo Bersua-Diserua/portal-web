@@ -1,4 +1,4 @@
-import { SeatAdmin, SeatContainer } from "~/components/rsvp/seat-container"
+import { Seat, SeatContainer } from "~/components/rsvp/seat-container"
 import { useCallback, useEffect, useState } from "react"
 
 import { Calendar } from "primereact/calendar"
@@ -46,7 +46,7 @@ export default function () {
         <Calendar id="calendar" minDate={minDate} maxDate={maxDate} value={date} onChange={(e: CalendarChangeEvent) => setDate(e.value)} />
         <SeatContainer>
           {seats?.map((x) => (
-            <SeatAdmin {...x} key={x.index} onClick={handleClick} />
+            <Seat {...x} key={x.index} />
           ))}
         </SeatContainer>
       </div>
