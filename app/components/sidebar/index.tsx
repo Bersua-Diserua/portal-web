@@ -1,6 +1,7 @@
 import { Link, useLocation } from "@remix-run/react"
+import { MdDashboard, MdLogout, MdOutlinePeople, MdProductionQuantityLimits, MdRsvp } from "react-icons/md"
 import React, { createContext, useContext, useState } from "react"
-import { MdDashboard, MdOutlinePeople, MdLogout, MdProductionQuantityLimits, MdRsvp } from "react-icons/md"
+
 import clsxm from "~/utils"
 
 const CONFIG: SidebarButonProps[] = [
@@ -28,6 +29,16 @@ const CONFIG: SidebarButonProps[] = [
   {
     to: "/dashboard/management",
     children: "User",
+    icon: <MdRsvp />,
+  },
+  {
+    to: "/dashboard/bot",
+    children: "WA Bot",
+    icon: <MdRsvp />,
+  },
+  {
+    to: "/dashboard/seat",
+    children: "Seat",
     icon: <MdRsvp />,
   },
   {
