@@ -5,7 +5,8 @@
     "build": "remix build",
     "dev": "remix dev",
     "start": "cross-env NODE_ENV=production binode --require ./node_modules/dotenv/config -- @remix-run/serve:remix-serve build",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "emit": "tsc --noEmit"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.0.0",

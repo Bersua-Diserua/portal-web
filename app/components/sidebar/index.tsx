@@ -1,6 +1,6 @@
 import { Link, useLocation } from "@remix-run/react"
 import { MdDashboard, MdLogout, MdOutlinePeople, MdProductionQuantityLimits, MdRsvp } from "react-icons/md"
-import React, { createContext, useContext, useEffect, useState } from "react"
+import React, { createContext, useContext, useState } from "react"
 
 import clsxm from "~/utils"
 
