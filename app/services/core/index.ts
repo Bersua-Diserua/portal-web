@@ -1,4 +1,6 @@
+import type { AxiosError, AxiosResponse } from "axios"
 import axios from "axios"
+import * as Sentry from "@sentry/remix"
 
 const api = axios.create({
   baseURL: process.env.BACKEND,
@@ -12,5 +14,13 @@ export function getHeaders(auth: Auth) {
     },
   }
 }
+
+api.interceptors.response.use(
+  (response: AxiosResponse) => response,
+  (error: AxiosError) => {
+    Sentry.captureException(error)
+    return Promise.reject(error)
+  }
+)
 
 export { api }
