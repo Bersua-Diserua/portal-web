@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import type { ActionFunction, LoaderArgs } from "@remix-run/node"
+import type { LoaderArgs } from "@remix-run/node"
 import { Link, useFetcher, useLoaderData } from "@remix-run/react"
 import { json, redirect } from "@remix-run/node"
 
@@ -34,7 +34,7 @@ export default function () {
   const fetcher = useFetcher()
   const { products } = useLoaderData<typeof loader>()
 
-  const bodyAction = useCallback((data: typeof products[number]) => {
+  const bodyAction = useCallback((data: (typeof products)[number]) => {
     return (
       <Link to={"/dashboard/product/edit/" + data.id}>
         <Button>Edit</Button>
@@ -42,7 +42,7 @@ export default function () {
     )
   }, [])
 
-  const bodyPreview = useCallback((data: typeof products[number]) => {
+  const bodyPreview = useCallback((data: (typeof products)[number]) => {
     const src = data.images[0]?.url
     // eslint-disable-next-line jsx-a11y/alt-text
     return src ? <img className="w-[5rem] aspect-square" src={src} /> : null

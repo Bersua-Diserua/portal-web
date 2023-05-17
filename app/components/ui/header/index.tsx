@@ -1,4 +1,6 @@
 import { useSidebar } from "~/components/sidebar"
+import { Spiral as Hamburger } from "hamburger-react"
+import { Menu } from "primereact/menu"
 
 export function Header() {
   const { setIsOpen, isOpen } = useSidebar()
@@ -8,9 +10,7 @@ export function Header() {
       <div className="flex items-center justify-between w-full py-3 mx-auto max-w-8xl">
         <h1 className="text-2xl">Sérua Coffee & Creative</h1>
       </div>
-      <button className="" onClick={() => setIsOpen(!isOpen)}>
-        Nav {isOpen ? "Open" : "close"}
-      </button>
+      <Hamburger onToggle={(toggled) => setIsOpen(toggled)} toggled={isOpen} />
     </header>
   )
 }
