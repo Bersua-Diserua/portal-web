@@ -9,7 +9,7 @@ const command = z.object({
   image: z.string().nullable(),
 })
 
-const commands = z.array(command)
+const commands = z.array(command).catch([])
 
 type Res = TResponse<{
   list: z.infer<typeof commands>

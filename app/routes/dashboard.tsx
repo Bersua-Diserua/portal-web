@@ -29,7 +29,7 @@ export default function () {
             })}
             style={{ transition: "margin-left .25s" }}
           >
-            <div className="py-5 px-5">
+            <div className="py-5 px-5 text-xs md:text-sm">
               <Outlet />
             </div>
           </div>

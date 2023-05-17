@@ -1,6 +1,6 @@
 import { Link, useLocation } from "@remix-run/react"
 import { MdDashboard, MdLogout, MdOutlinePeople, MdProductionQuantityLimits, MdRsvp } from "react-icons/md"
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useEffect, useState } from "react"
 
 import clsxm from "~/utils"
 
@@ -65,8 +65,13 @@ export function useSidebar() {
 
 export function SidebarProvider(props: { children: (props: SidebarContextProps) => JSX.Element }) {
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const pathname = useLocation().pathname
 
   const ctx = { isOpen, setIsOpen }
+
+  useEffect(() => {
+    setIsOpen(false)
+  }, [pathname])
 
   return (
     <SidebarContext.Provider value={ctx} {...props}>
@@ -90,7 +95,7 @@ export function Sidebar() {
       />
       <aside
         className={clsxm(
-          "fixed rounded-r-2xl select-none py-4 px-10 md:rounded-2xl transition-transform w-sidebar h-screen md:h-[calc(100vh-9rem)] top-0 left-0 z-50 md:top-[7rem] md:left-[2rem] bg-white md:px-2",
+          "fixed rounded-r-2xl select-none py-4 px-10 md:rounded-2xl transition-transform w-sidebar h-screen md:h-[calc(100vh-9rem)] top-0 left-0 z-50 md:top-[7rem] md:left-[2rem] bg-white md:px-2 overflow-y-auto",
           {
             "-translate-x-full !left-0": !isOpen,
           }
