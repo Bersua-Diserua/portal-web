@@ -8,8 +8,8 @@ export function Header() {
       <div className="flex items-center justify-between w-full py-3 mx-auto max-w-8xl">
         <h1 className="text-2xl">Sérua Coffee & Creative</h1>
       </div>
-      <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
-        Nav {isOpen ? "Opn" : "cls"}
+      <button className="" onClick={() => setIsOpen(!isOpen)}>
+        Nav {isOpen ? "Open" : "close"}
       </button>
     </header>
   )

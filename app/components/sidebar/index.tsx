@@ -1,6 +1,6 @@
 import { Link, useLocation } from "@remix-run/react"
 import { MdDashboard, MdLogout, MdOutlinePeople, MdProductionQuantityLimits, MdRsvp } from "react-icons/md"
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useEffect, useState } from "react"
 
 import clsxm from "~/utils"
 
@@ -63,32 +63,46 @@ export function useSidebar() {
   return ctx
 }
 
-export function SidebarProvider(props: { children: React.ReactNode }) {
+export function SidebarProvider(props: { children: (props: SidebarContextProps) => JSX.Element }) {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
+  const ctx = { isOpen, setIsOpen }
+
   return (
-    <SidebarContext.Provider
-      value={{
-        isOpen,
-        setIsOpen,
-      }}
-      {...props}
-    />
+    <SidebarContext.Provider value={ctx} {...props}>
+      {props.children(ctx)}
+    </SidebarContext.Provider>
   )
 }
 
 export function Sidebar() {
+  const { isOpen, setIsOpen } = useSidebar()
+
   return (
-    <aside
-      aria-label="Default sidebar example"
-      className="fixed hidden inset-0 top-0 z-20 flex-none min-h-screen w-72 lg:static lg:h-auto lg:overflow-y-visible lg:w-48 lg:block border-r border-gray-300"
-    >
-      <div className="pt-4 flex flex-col gap-4 pr-6">
-        {CONFIG.map((x) => {
-          return <Button {...x} key={x.to} />
+    <>
+      <div
+        className={clsxm("bg-black/20 inset-0 fixed z-50 w-screen h-screen hidden pointer-events-none", {
+          "pointer-events-auto block md:hidden": isOpen,
         })}
-      </div>
-    </aside>
+        onClick={() => {
+          setIsOpen(false)
+        }}
+      />
+      <aside
+        className={clsxm(
+          "fixed rounded-r-2xl select-none py-4 px-10 md:rounded-2xl transition-transform w-sidebar h-screen md:h-[calc(100vh-9rem)] top-0 left-0 z-50 md:top-[7rem] md:left-[2rem] bg-white md:px-2",
+          {
+            "-translate-x-full !left-0": !isOpen,
+          }
+        )}
+      >
+        <div className="pt-4 flex flex-col gap-4">
+          {CONFIG.map((x) => {
+            return <Button {...x} key={x.to} />
+          })}
+        </div>
+      </aside>
+    </>
   )
 }
 
@@ -107,7 +121,7 @@ export function Button(props: SidebarButonProps) {
   return (
     <Link
       className={clsxm([
-        "text-black flex gap-4 items-center px-4 py-3 rounded-lg",
+        "text-black flex gap-4 items-center py-3 px-4 rounded-lg",
         isActive && "bg-accent-green",
         !isActive && "bg-none text-gray-400",
       ])}

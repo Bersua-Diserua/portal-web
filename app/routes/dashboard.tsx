@@ -4,6 +4,7 @@ import { Outlet } from "@remix-run/react"
 import { Sidebar, SidebarProvider } from "~/components/sidebar"
 import { Header } from "~/components/ui/header"
 import { getAuthorization } from "~/utils/authorization"
+import clsxm from "~/utils"
 
 export async function loader({ request }: LoaderArgs) {
   const auth = await getAuthorization(request)
@@ -18,19 +19,22 @@ export async function loader({ request }: LoaderArgs) {
 export default function () {
   return (
     <SidebarProvider>
-      <Header />
-      <div className="w-full px-4 mx-auto max-w-8xl">
-        <div className="lg:flex">
+      {({ isOpen }) => (
+        <>
+          <Header />
           <Sidebar />
-          <main className="flex-auto w-full min-w-0 lg:static lg:max-h-full lg:overflow-visible">
-            <div className="flex w-full">
-              <div className="flex-auto max-w-4xl min-w-0 pt-6 lg:px-8 lg:pt-8 pb:12 xl:pb-24 lg:pb-16">
-                <Outlet />
-              </div>
+          <div
+            className={clsxm("md:pl-[4rem]", {
+              "md:ml-[var(--sidebar-width)]": isOpen,
+            })}
+            style={{ transition: "margin-left .25s" }}
+          >
+            <div className="py-5 px-5">
+              <Outlet />
             </div>
-          </main>
-        </div>
-      </div>
+          </div>
+        </>
+      )}
     </SidebarProvider>
   )
 }

@@ -2,8 +2,7 @@
 module.exports = {
   cacheDirectory: "./node_modules/.cache/remix",
   ignoredRouteFiles: ["**/.*"],
-  future: {
-    unstable_tailwind: true,
-  },
   serverDependenciesToBundle: ["axios"],
-};
+  tailwind: true,
+  // postcss: true,
+}
