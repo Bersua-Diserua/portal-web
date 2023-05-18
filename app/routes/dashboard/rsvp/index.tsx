@@ -66,9 +66,14 @@ export default function () {
     <div>
       <h1 className="text-lg font-bold mb-4">Reservation</h1>
       <div className="grid gap-3 grid-cols-2 md:grid-cols-4 mb-4">
-        <RsvpStat title="Hari ini" overview={overview.today} />
-        <RsvpStat title="30 hari" overview={overview.month} />
+        <Link to="/dashboard/rsvp/record/type/today">
+          <RsvpStat title="Hari ini" overview={overview.today} />
+        </Link>
+        <Link to="/dashboard/rsvp/record/type/month">
+          <RsvpStat title="30 hari" overview={overview.month} />
+        </Link>
       </div>
+      <pre>{JSON.stringify(overview, null, 1)}</pre>
       <div className="flex gap-4 mb-4 flex-col">
         <label htmlFor="calendar">Choose date:</label>
         <Calendar id="calendar" minDate={minDate} maxDate={maxDate} value={date} onChange={(e: CalendarChangeEvent) => setDate(e.value)} />
@@ -82,12 +87,12 @@ export default function () {
             rows={5}
             rowsPerPageOptions={[5, 10, 25, 50]}
           >
-            <Column field="seat" sortable header="Seat"></Column>
-            <Column field="details.name" sortable header="Name"></Column>
-            <Column field="status" sortable header="Status" body={statusColumn}></Column>
-            <Column field="details.capacity" header="Capacity"></Column>
-            <Column field="details.phoneNumber" header="Phone Number"></Column>
-            <Column header="Action" body={bodyAction}></Column>
+            <Column field="seat" sortable header="Seat" />
+            <Column field="details.name" sortable header="Name" />
+            <Column field="status" sortable header="Status" body={statusColumn} />
+            <Column field="details.capacity" header="Capacity" />
+            <Column field="details.phoneNumber" header="Phone Number" />
+            <Column header="Action" body={bodyAction} />
           </DataTable>
         )}
       </ClientOnly>

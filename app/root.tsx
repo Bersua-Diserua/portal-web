@@ -11,6 +11,7 @@ import appCss from "./styles/app.css"
 import { cssBundleHref } from "@remix-run/css-bundle"
 
 import { ToastProvider } from "./components/ui/toast"
+import { AxiosError } from "axios"
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -42,6 +43,18 @@ export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ]
 
+function Document({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <Meta />
+        <Links />
+      </head>
+      <body className="bg-gray-100 box-border dark:bg-dark-1 text-black dark:text-white">{children}</body>
+    </html>
+  )
+}
+
 export default function App() {
   return (
     <html lang="en">
@@ -67,23 +80,42 @@ export function ErrorBoundary() {
   // when true, this is what used to go to `CatchBoundary`
   if (isRouteErrorResponse(error)) {
     return (
-      <div>
-        <h1>Oops</h1>
-        <p>Status: {error.status}</p>
-        <p>{error.data.message}</p>
-      </div>
+      <Document>
+        <div>
+          <h1>Oops</h1>
+          <p>Status: {error.status}</p>
+          <p>{error.data.message}</p>
+        </div>
+      </Document>
     )
   }
 
   // Don't forget to typecheck with your own logic.
   // Any value can be thrown, not just errors!
   let errorMessage = "Unknown error"
+  let errorType = ""
+  let url: unknown = null
+
+  if (error instanceof AxiosError) {
+    errorType = "API ERROR"
+    errorMessage = error.message
+    url = error.toJSON()
+  } else if (error instanceof Error) {
+    errorMessage = error.message
+    errorType = error.name
+  }
 
   return (
-    <div>
-      <h1>Uh oh ...</h1>
-      <p>Something went wrong.</p>
-      <pre>{errorMessage}</pre>
-    </div>
+    <Document>
+      <div className="bg-red-200 h-screen w-screen p-4 flex flex-col">
+        <h1 className="text-4xl font-bold">Oh oh ...</h1>
+        <p className="text-lg mb-4">Something went wrong.</p>
+        <div className="max-w-full bg-red-400 rounded-lg max-h-full overflow-scroll shadow-inner p-2">
+          <pre>{errorType}</pre>
+          <pre>{errorMessage}</pre>
+          {!!url && <pre className="whitespace-pre">{JSON.stringify(url, null, 2)}</pre>}
+        </div>
+      </div>
+    </Document>
   )
 }

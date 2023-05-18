@@ -1,13 +1,6 @@
 import { z } from "zod"
 import { api, getHeaders, resSchema } from "~/services/core"
-
-export const rsvpRecordStatus = z.enum([
-  "TICKET", // Generate ticket
-  "SUBMISSION", // User do submission
-  "SUBMISSION.APPROVE", // Submission user already approved by admin
-  "RESOLVE", // Payment has received by admin
-  "REJECT", // Rsvp submission has rejected by admin
-])
+import { rsvpRecordStatus } from "../status-types"
 
 const overviewSchema = z.object({
   status: rsvpRecordStatus,
