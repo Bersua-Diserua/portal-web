@@ -1,7 +1,7 @@
 // import "~/global.css"
-
+import type { V2_MetaFunction } from "@remix-run/react"
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, useRouteError } from "@remix-run/react"
-import type { LinksFunction, MetaFunction } from "@remix-run/node"
+import type { LinksFunction } from "@remix-run/node"
 
 import primecore from "primereact/resources/primereact.min.css" //core css
 import primeicons from "primeicons/primeicons.css" //icons
@@ -13,11 +13,59 @@ import { cssBundleHref } from "@remix-run/css-bundle"
 import { ToastProvider } from "./components/ui/toast"
 import { AxiosError } from "axios"
 
-export const meta: MetaFunction = () => ({
-  charset: "utf-8",
-  title: "Sérua Coffee & Creative",
-  viewport: "width=device-width,initial-scale=1",
-})
+export const meta: V2_MetaFunction = () => {
+  return [
+    // <!-- Primary Meta Tags -->
+    { charSet: "utf-8" },
+    { title: "Sérua Coffee & Creative" },
+    { description: "Tempat ngopi santuy" },
+    { viewport: "width=device-width,initial-scale=1" },
+
+    // <!-- Open Graph / Facebook -->
+    {
+      property: "og:type",
+      content: "website",
+    },
+    {
+      property: "og:url",
+      content: "https://rsvp.bersuadiserua.com",
+    },
+    {
+      property: "og:title",
+      content: "Sérua Coffee & Creative",
+    },
+    {
+      property: "og:description",
+      content: "Tempat ngopi santuy",
+    },
+    {
+      property: "og:image",
+      content: "https://ik.imagekit.io/bersuadiserua22/icons/serua-transparent.png?updatedAt=1680891312871",
+    },
+
+    // <!-- Twitter -->
+    {
+      property: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      property: "twitter:url",
+      content: "https://ik.imagekit.io/bersuadiserua22/icons/serua-transparent.png?updatedAt=1680891312871",
+    },
+    {
+      property: "twitter:title",
+      content: "Sérua Coffee & Creative",
+    },
+    {
+      property: "twitter:description",
+      content: "Tempat ngopi santuy",
+    },
+    {
+      property: "twitter:image",
+      content: "https://ik.imagekit.io/bersuadiserua22/icons/serua-transparent.png?updatedAt=1680891312871",
+    },
+  ]
+}
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: appCss },
