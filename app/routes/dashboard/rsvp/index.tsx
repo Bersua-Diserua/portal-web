@@ -72,6 +72,9 @@ export default function () {
         <Link to="/dashboard/rsvp/record/type/month">
           <RsvpStat title="30 hari" overview={overview.month} />
         </Link>
+        <Link to="/dashboard/rsvp/record/type/ago">
+          <RsvpStat title="Riwayat" overview={overview.ago} />
+        </Link>
       </div>
       <pre>{JSON.stringify(overview, null, 1)}</pre>
       <div className="flex gap-4 mb-4 flex-col">

@@ -10,6 +10,7 @@ const overviewSchema = z.object({
 const summary = z.object({
   today: z.array(overviewSchema),
   month: z.array(overviewSchema),
+  ago: z.array(overviewSchema),
 })
 
 const resOverview = resSchema(

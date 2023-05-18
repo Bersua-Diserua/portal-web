@@ -2,7 +2,7 @@ import { z } from "zod"
 import { getHeaders } from "~/services/core"
 import { api } from "~/services/core"
 
-export const groupType = z.enum(["today", "month"])
+export const groupType = z.enum(["today", "month", "ago"])
 
 type GroupType = z.infer<typeof groupType>
 
