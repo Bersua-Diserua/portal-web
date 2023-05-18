@@ -13,6 +13,7 @@ import { cssBundleHref } from "@remix-run/css-bundle"
 import { ToastProvider } from "./components/ui/toast"
 import { AxiosError } from "axios"
 
+const OG_IMAGE = "https://ik.imagekit.io/bersuadiserua22/tr:w-1200,h-630/icons/serua-transparent.png?updatedAt=1680891312871"
 export const meta: V2_MetaFunction = () => {
   return [
     // <!-- Primary Meta Tags -->
@@ -40,7 +41,7 @@ export const meta: V2_MetaFunction = () => {
     },
     {
       property: "og:image",
-      content: "https://ik.imagekit.io/bersuadiserua22/icons/serua-transparent.png?updatedAt=1680891312871",
+      content: OG_IMAGE,
     },
 
     // <!-- Twitter -->
@@ -50,7 +51,7 @@ export const meta: V2_MetaFunction = () => {
     },
     {
       property: "twitter:url",
-      content: "https://ik.imagekit.io/bersuadiserua22/icons/serua-transparent.png?updatedAt=1680891312871",
+      content: OG_IMAGE,
     },
     {
       property: "twitter:title",
@@ -62,7 +63,7 @@ export const meta: V2_MetaFunction = () => {
     },
     {
       property: "twitter:image",
-      content: "https://ik.imagekit.io/bersuadiserua22/icons/serua-transparent.png?updatedAt=1680891312871",
+      content: OG_IMAGE,
     },
   ]
 }
