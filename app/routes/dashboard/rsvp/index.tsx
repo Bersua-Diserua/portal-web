@@ -1,4 +1,4 @@
-import { Link, useFetcher } from "@remix-run/react"
+import { Link, useFetcher, useLoaderData } from "@remix-run/react"
 import { useCallback, useEffect, useState } from "react"
 
 import { Calendar } from "primereact/calendar"
@@ -11,8 +11,21 @@ import type { Nullable } from "primereact/ts-helpers"
 import type { PreviewLoader } from "./preview"
 import { useToast } from "~/components/ui/toast"
 import { StatusRsvp } from "~/components/rsvp/status"
+import type { LoaderArgs } from "@remix-run/node"
+import { json } from "@remix-run/node"
+import { getRequiredAuth } from "~/utils/authorization"
+import { getOverview } from "~/services/rsvp/management/overview"
+import { RsvpStat } from "~/components/ui/stats"
+
+export async function loader({ request }: LoaderArgs) {
+  const auth = await getRequiredAuth(request)
+  return json({
+    overview: await getOverview(auth),
+  })
+}
 
 export default function () {
+  const { overview } = useLoaderData<typeof loader>()
   const fetcher = useFetcher<PreviewLoader>()
   const toast = useToast()
   const [dialog, setDialog] = useState<null | string>(null)
@@ -41,17 +54,21 @@ export default function () {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetcher.data, toast])
 
-  const bodyAction = useCallback((data: NonNullable<typeof fetcher["data"]>["records"][number]) => {
+  const bodyAction = useCallback((data: NonNullable<(typeof fetcher)["data"]>["records"][number]) => {
     return <Link to={`/dashboard/rsvp/record/${data.recordId}`}>Details</Link>
   }, [])
 
-  const statusColumn = useCallback((data: NonNullable<typeof fetcher["data"]>["records"][number]) => {
+  const statusColumn = useCallback((data: NonNullable<(typeof fetcher)["data"]>["records"][number]) => {
     return <StatusRsvp status={data.status} />
   }, [])
 
   return (
     <div>
       <h1 className="text-lg font-bold mb-4">Reservation</h1>
+      <div className="grid gap-3 grid-cols-2 md:grid-cols-4 mb-4">
+        <RsvpStat title="Hari ini" overview={overview.today} />
+        <RsvpStat title="30 hari" overview={overview.month} />
+      </div>
       <div className="flex gap-4 mb-4 flex-col">
         <label htmlFor="calendar">Choose date:</label>
         <Calendar id="calendar" minDate={minDate} maxDate={maxDate} value={date} onChange={(e: CalendarChangeEvent) => setDate(e.value)} />
