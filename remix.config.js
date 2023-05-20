@@ -4,5 +4,7 @@ module.exports = {
   ignoredRouteFiles: ["**/.*"],
   serverDependenciesToBundle: ["axios"],
   tailwind: true,
-  // postcss: true,
+  future: {
+    v2_meta: true,
+  },
 }
