@@ -1,7 +1,7 @@
 import { api } from "~/services/core"
 import { z } from "zod"
 
-const command = z.object({
+export const command = z.object({
   id: z.string(),
   commandCode: z.number().nullable(),
   message: z.string().nullable(),
@@ -9,15 +9,17 @@ const command = z.object({
   image: z.string().nullable(),
 })
 
-const commands = z.array(command).catch([])
+export type CommandType = z.infer<typeof command>
+
+const commandList = z.array(command).catch([])
 
 type Res = TResponse<{
-  list: z.infer<typeof commands>
+  list: z.infer<typeof commandList>
 }>
 
 export async function getResponseList() {
   const { data } = await api.get<Res>("/bot/command")
   return {
-    list: commands.parse(data.payload.list),
+    list: commandList.parse(data.payload.list),
   }
 }

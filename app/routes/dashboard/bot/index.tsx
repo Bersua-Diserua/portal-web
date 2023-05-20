@@ -1,10 +1,18 @@
+import { Button } from "primereact/button"
 import { ClientOnly } from "remix-utils"
 import { Column } from "primereact/column"
+import type { CommandType } from "../../../services/bot/list"
 import { DataTable } from "primereact/datatable"
+import { Dialog } from "primereact/dialog"
 import type { LoaderArgs } from "@remix-run/node"
+import { TextField } from "~/components/ui/form"
+import { command } from "../../../services/bot/list"
 import { getResponseList } from "~/services/bot/list"
 import { json } from "@remix-run/node"
+import { useForm } from "react-hook-form"
 import { useLoaderData } from "@remix-run/react"
+import { useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 export async function loader({ request }: LoaderArgs) {
   const { list } = await getResponseList()
@@ -15,10 +23,33 @@ export async function loader({ request }: LoaderArgs) {
 
 export default function () {
   const { list } = useLoaderData<typeof loader>()
+  const [visibleDialog, setVisibleDialog] = useState<boolean>(false)
+  const { register, reset } = useForm<CommandType>({
+    resolver: zodResolver(command),
+  })
+
+  const onClickEdit = (data: CommandType) => {
+    setVisibleDialog(true)
+    reset(data)
+  }
+
+  const onHideDialog = () => {
+    setVisibleDialog(false)
+  }
+
+  const footerContent = (
+    <div>
+      <Button label="No" icon="pi pi-times" className="p-button-text" />
+      <Button label="Yes" icon="pi pi-check" autoFocus />
+    </div>
+  )
 
   return (
-    <div>
-      <h1 className="text-lg font-bold mb-4">Bot Message</h1>
+    <div className="flex flex-col gap-y-4">
+      <div className="flex flex-row justify-between text-center">
+        <h1 className="text-lg font-bold mb-4">Bot Message</h1>
+        <Button>Add New</Button>
+      </div>
       <ClientOnly>
         {() => (
           <DataTable
@@ -36,9 +67,16 @@ export default function () {
             <Column field="commandCode" header="Code" />
             <Column field="message" header="Response" filter />
             <Column field="type" header="Type" filter />
+            <Column header="Action" body={(data) => <Button onClick={() => onClickEdit(data)}>Edit</Button>} />
           </DataTable>
         )}
       </ClientOnly>
+      <Dialog header="Header" visible={visibleDialog} style={{ width: "50vw" }} onHide={onHideDialog} footer={footerContent}>
+        <div className="flex flex-col gap-y-4">
+          <TextField label="Command Code" {...register("commandCode")} />
+          <TextField label="Message" {...register("message")} />
+        </div>
+      </Dialog>
     </div>
   )
 }

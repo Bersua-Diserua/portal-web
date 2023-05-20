@@ -3,14 +3,13 @@
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, useRouteError } from "@remix-run/react"
 import type { LinksFunction, MetaFunction } from "@remix-run/node"
 
+import { ToastProvider } from "./components/ui/toast"
+import appCss from "./styles/app.css"
+import { cssBundleHref } from "@remix-run/css-bundle"
 import primecore from "primereact/resources/primereact.min.css" //core css
 import primeicons from "primeicons/primeicons.css" //icons
 import primetheme from "primereact/resources/themes/lara-light-indigo/theme.css" //theme
 import tailwindCss from "./tailwind.css"
-import appCss from "./styles/app.css"
-import { cssBundleHref } from "@remix-run/css-bundle"
-
-import { ToastProvider } from "./components/ui/toast"
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
