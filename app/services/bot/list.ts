@@ -5,8 +5,8 @@ export const command = z.object({
   id: z.string(),
   commandCode: z.number().nullable(),
   message: z.string().nullable(),
-  type: z.string().nullable(),
-  image: z.string().nullable(),
+  type: z.string().nullable().optional(),
+  image: z.string().nullable().optional(),
 })
 
 export type CommandType = z.infer<typeof command>

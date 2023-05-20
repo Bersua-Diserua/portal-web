@@ -21,10 +21,14 @@ export async function loader({ request }: LoaderArgs) {
   })
 }
 
+export async function action() {
+  return json({})
+}
+
 export default function () {
   const { list } = useLoaderData<typeof loader>()
   const [visibleDialog, setVisibleDialog] = useState<boolean>(false)
-  const { register, reset } = useForm<CommandType>({
+  const { handleSubmit, register, reset } = useForm<CommandType>({
     resolver: zodResolver(command),
   })
 
@@ -33,14 +37,23 @@ export default function () {
     reset(data)
   }
 
+  const onAddNew = () => {
+    setVisibleDialog(true)
+    reset({})
+  }
+
   const onHideDialog = () => {
     setVisibleDialog(false)
   }
 
+  const onSubmitDailog = handleSubmit((data) => {
+    console.log({ ...data })
+  }, console.error)
+
   const footerContent = (
     <div>
       <Button label="No" icon="pi pi-times" className="p-button-text" />
-      <Button label="Yes" icon="pi pi-check" autoFocus />
+      <Button label="Yes" icon="pi pi-check" autoFocus onClick={onSubmitDailog} />
     </div>
   )
 
@@ -48,7 +61,7 @@ export default function () {
     <div className="flex flex-col gap-y-4">
       <div className="flex flex-row justify-between text-center">
         <h1 className="text-lg font-bold mb-4">Bot Message</h1>
-        <Button>Add New</Button>
+        <Button onClick={onAddNew}>Add New</Button>
       </div>
       <ClientOnly>
         {() => (
@@ -71,9 +84,16 @@ export default function () {
           </DataTable>
         )}
       </ClientOnly>
-      <Dialog header="Header" visible={visibleDialog} style={{ width: "50vw" }} onHide={onHideDialog} footer={footerContent}>
+      <Dialog
+        header="Whatsapp Response Message"
+        visible={visibleDialog}
+        style={{ width: "60vw" }}
+        onHide={onHideDialog}
+        footer={footerContent}
+      >
         <div className="flex flex-col gap-y-4">
-          <TextField label="Command Code" {...register("commandCode")} />
+          <input {...register("id")} className="hidden"></input>
+          <input type="number" {...register("commandCode")} />
           <TextField label="Message" {...register("message")} />
         </div>
       </Dialog>
