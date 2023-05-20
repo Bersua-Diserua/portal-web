@@ -25,6 +25,7 @@
     "dotenv": "^16.0.3",
     "flowbite": "^1.6.4",
     "flowbite-react": "^0.4.2",
+    "framer-motion": "^10.12.12",
     "hamburger-react": "^2.5.0",
     "isbot": "latest",
     "moment": "^2.29.4",

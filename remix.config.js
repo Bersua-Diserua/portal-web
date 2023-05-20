@@ -2,9 +2,12 @@
 module.exports = {
   cacheDirectory: "./node_modules/.cache/remix",
   ignoredRouteFiles: ["**/.*"],
-  serverDependenciesToBundle: ["axios"],
+  serverDependenciesToBundle: ["axios", "@sentry/remix"],
+  serverModuleFormat: "cjs",
   tailwind: true,
   future: {
     v2_meta: true,
+    v2_errorBoundary: true,
+    v2_normalizeFormMethod: true,
   },
 }
