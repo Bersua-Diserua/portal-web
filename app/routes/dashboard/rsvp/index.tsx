@@ -7,15 +7,15 @@ import { ClientOnly } from "remix-utils"
 import { Column } from "primereact/column"
 import { DataTable } from "primereact/datatable"
 import { Dialog } from "primereact/dialog"
+import type { LoaderArgs } from "@remix-run/node"
 import type { Nullable } from "primereact/ts-helpers"
 import type { PreviewLoader } from "./preview"
-import { useToast } from "~/components/ui/toast"
-import { StatusRsvp } from "~/components/rsvp/status"
-import type { LoaderArgs } from "@remix-run/node"
-import { json } from "@remix-run/node"
-import { getRequiredAuth } from "~/utils/authorization"
-import { getOverview } from "~/services/rsvp/management/overview"
 import { RsvpStat } from "~/components/ui/stats"
+import { StatusRsvp } from "~/components/rsvp/status"
+import { getOverview } from "~/services/rsvp/management/overview"
+import { getRequiredAuth } from "~/utils/authorization"
+import { json } from "@remix-run/node"
+import { useToast } from "~/components/ui/toast"
 
 export async function loader({ request }: LoaderArgs) {
   const auth = await getRequiredAuth(request)
@@ -76,7 +76,6 @@ export default function () {
           <RsvpStat title="Riwayat" overview={overview.ago} />
         </Link>
       </div>
-      <pre>{JSON.stringify(overview, null, 1)}</pre>
       <div className="flex gap-4 mb-4 flex-col">
         <label htmlFor="calendar">Choose date:</label>
         <Calendar id="calendar" minDate={minDate} maxDate={maxDate} value={date} onChange={(e: CalendarChangeEvent) => setDate(e.value)} />
