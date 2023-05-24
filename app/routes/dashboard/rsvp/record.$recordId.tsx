@@ -62,7 +62,7 @@ export default function () {
         }
       } else if (status === "SUBMISSION.APPROVE") {
         template.header = "Terima pesanan?"
-        template.message = "Rservasi yang diterima akan menunggu proses pembayaran"
+        template.message = "Reservasi yang diterima akan menunggu proses pembayaran"
         template.accept = () => {
           submit({
             recordId: record.id,

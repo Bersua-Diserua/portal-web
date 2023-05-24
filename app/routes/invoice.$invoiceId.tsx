@@ -49,8 +49,20 @@ export default function () {
         <div className="lg:flex">
           <main className="flex-auto w-full min-w-0 lg:static lg:max-h-full lg:overflow-visible">
             <div className="flex w-full">
-              <div className="flex-auto min-w-0 pt-6 pb-12">
+              <div className="flex flex-col w-full min-w-0 pt-6 pb-12 gap-y-14 items-center">
                 <Invoice data={record} />
+                <div className="flex flex-col items-center rounded-lg p-8 bg-[#0f172a] w-full md:w-max text-white gap-y-4">
+                  <p>Pindai untuk pembayaran</p>
+                  <p className="font-semibold text-lg">Sérua Coffe & Creative Space</p>
+                  <div className="bg-white p-1 rounded-lg">
+                    <img
+                      className="h-[350px] w-[350px] object-contain"
+                      src="https://ik.imagekit.io/bersuadiserua22/SCAN_QR.png?tr=w-2324,h-2324,fo-custom,cm-extract"
+                      alt=""
+                    />
+                  </div>
+                  <p className="font-semibold tracking-wider text-xl">QRIS</p>
+                </div>
               </div>
             </div>
           </main>

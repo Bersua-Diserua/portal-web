@@ -177,27 +177,27 @@ export default function () {
                 <div className="flex flex-row gap-x-8">
                   <div className="flex flex-row gap-x-2 items-center">
                     <div className={`h-5 w-5 rounded-full border ${mapStatus.LOCKED}`}></div>
-                    <p>Locked</p>
+                    <p>Dikunci</p>
                   </div>
 
                   <div className="flex flex-row gap-x-2 items-center">
                     <div className={`h-5 w-5 rounded-full border ${mapStatus.RESERVED}`}></div>
-                    <p>Reserved</p>
+                    <p>Sudah Dipesan</p>
                   </div>
 
                   <div className="flex flex-row gap-x-2 items-center">
                     <div className={`h-5 w-5 rounded-full border ${mapStatus.HOLD}`}></div>
-                    <p>Hold</p>
+                    <p>Menunggu Konfirmasi</p>
                   </div>
                 </div>
                 <div className="flex flex-row gap-x-8">
                   <div className="flex flex-row gap-x-2 items-center">
                     <div className={`h-5 w-5 rounded-full border ${mapStatus.SELECTED}`}></div>
-                    <p>Selected</p>
+                    <p>Pilihan Kamu</p>
                   </div>
                   <div className="flex flex-row gap-x-2 items-center">
                     <div className={`h-5 w-5 rounded-full border ${mapStatus.OPEN}`}></div>
-                    <p>Open</p>
+                    <p>Terbuka</p>
                   </div>
                 </div>
               </div>
